@@ -1,6 +1,13 @@
 import React from 'react';
+import type { ViewMode } from '../App';
+import { Layers, Box } from 'lucide-react';
 
-const Overlay: React.FC = () => {
+interface OverlayProps {
+    viewMode: ViewMode;
+    setViewMode: (mode: ViewMode) => void;
+}
+
+const Overlay: React.FC<OverlayProps> = ({ viewMode, setViewMode }) => {
     return (
         <div style={{
             position: 'absolute',
@@ -28,7 +35,26 @@ const Overlay: React.FC = () => {
                     <div style={{ width: '30px', height: '30px', background: 'linear-gradient(45deg, #00d4ff, #ff0055)', borderRadius: '8px' }}></div>
                     <h1 style={{ margin: 0, color: 'white', fontSize: '1.2rem', fontFamily: 'Inter, sans-serif' }}>3D Gantt Chart</h1>
                 </div>
-                <div style={{ display: 'flex', gap: '20px', color: 'white' }}>
+                <div style={{ display: 'flex', gap: '20px', color: 'white', alignItems: 'center' }}>
+                    <button
+                        onClick={() => setViewMode(viewMode === 'perspective' ? 'horizontal' : 'perspective')}
+                        style={{
+                            background: 'rgba(255,255,255,0.1)',
+                            border: '1px solid rgba(255,255,255,0.2)',
+                            padding: '8px 12px',
+                            borderRadius: '8px',
+                            color: 'white',
+                            cursor: 'pointer',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '8px',
+                            transition: 'all 0.2s'
+                        }}
+                    >
+                        {viewMode === 'perspective' ? <Box size={16} /> : <Layers size={16} />}
+                        {viewMode === 'perspective' ? '3D View' : '2D View'}
+                    </button>
+                    <div style={{ width: '1px', height: '20px', background: 'rgba(255,255,255,0.2)' }}></div>
                     <span>Project Alpha</span>
                     <span style={{ opacity: 0.5 }}>|</span>
                     <span>May 15</span>
