@@ -5,9 +5,11 @@ import { Layers, Box } from 'lucide-react';
 interface OverlayProps {
     viewMode: ViewMode;
     setViewMode: (mode: ViewMode) => void;
+    isOpen: boolean;
+    setIsOpen: (isOpen: boolean) => void;
 }
 
-const Overlay: React.FC<OverlayProps> = ({ viewMode, setViewMode }) => {
+const Overlay: React.FC<OverlayProps> = ({ viewMode, setViewMode, isOpen, setIsOpen }) => {
     return (
         <div style={{
             position: 'absolute',
@@ -54,6 +56,27 @@ const Overlay: React.FC<OverlayProps> = ({ viewMode, setViewMode }) => {
                         {viewMode === 'perspective' ? <Box size={16} /> : <Layers size={16} />}
                         {viewMode === 'perspective' ? '3D View' : '2D View'}
                     </button>
+
+                    <button
+                        onClick={() => setIsOpen(!isOpen)}
+                        style={{
+                            background: 'rgba(255,255,255,0.1)',
+                            border: '1px solid rgba(255,255,255,0.2)',
+                            padding: '8px 12px',
+                            borderRadius: '8px',
+                            color: 'white',
+                            cursor: 'pointer',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '8px',
+                            transition: 'all 0.2s',
+                            minWidth: '80px',
+                            justifyContent: 'center'
+                        }}
+                    >
+                        {isOpen ? 'Close Lid' : 'Open Lid'}
+                    </button>
+
                     <div style={{ width: '1px', height: '20px', background: 'rgba(255,255,255,0.2)' }}></div>
                     <span>Project Alpha</span>
                     <span style={{ opacity: 0.5 }}>|</span>
