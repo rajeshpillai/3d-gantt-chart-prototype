@@ -104,6 +104,9 @@ const GanttBar: React.FC<GanttBarProps> = ({ task, index }) => {
                     }}>
                         <div style={{ fontWeight: 'bold' }}>{task.name}</div>
                         <div style={{ fontSize: '0.8em', color: '#ccc' }}>{task.duration} days</div>
+                        {task.startDate && task.endDate && (
+                            <div style={{ fontSize: '0.7em', color: '#aaa' }}>{task.startDate} - {task.endDate}</div>
+                        )}
                         <div style={{ fontSize: '0.8em', color: color, textTransform: 'capitalize' }}>{task.status}</div>
                     </div>
                 </Html>
