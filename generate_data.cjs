@@ -11,7 +11,7 @@ const MAX_DAYS = Math.ceil((PROJECT_END_DATE - PROJECT_START_DATE) / (1000 * 60 
 
 let currentDayOffset = 0;
 
-for (let i = 1; i <= 10000; i++) {
+for (let i = 1; i <= 100000; i++) {
     // Random duration: mostly short (1-10 days), some long (30-90 days)
     let duration;
     if (Math.random() > 0.9) {

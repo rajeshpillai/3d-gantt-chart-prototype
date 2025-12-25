@@ -4,6 +4,7 @@ import { Html } from '@react-three/drei';
 import * as THREE from 'three';
 import { MOCK_DATA } from '../mockData';
 import { THEME } from '../theme';
+import { useVirtualWindow } from '../hooks/useVirtualWindow';
 
 const tempObject = new THREE.Object3D();
 const tempColor = new THREE.Color();
@@ -12,49 +13,70 @@ const GanttChart: React.FC<ThreeElements['group']> = (props) => {
     const meshRef = useRef<THREE.InstancedMesh>(null);
     const [hoveredId, setHover] = useState<string | null>(null);
 
-    // Render all data
-    const tasks = MOCK_DATA;
-    const count = tasks.length;
+    // Virtualization Hook
+    const { start, end } = useVirtualWindow(MOCK_DATA.length);
+
+    // We render a fixed pool of instances equal to the window size
+    // For this prototype, we'll try to just render the 'slice' of instances.
+    // However, InstancedMesh args cannot change size easily without recreating buffer.
+    // Better strategy: Create a pool of standard size (e.g. 500) and recycling them?
+    // Actually, React-Three-Fiber handles count updates reasonably well if strictly limited.
+    // But 'args={[undefined, undefined, count]}' re-instantiates geometry if 'count' changes drastically.
+    // 'useVirtualWindow' returns a stable-ish size POOL_SIZE (500).
+    const count = end - start;
 
     useLayoutEffect(() => {
         if (!meshRef.current) return;
 
-        // Set positions and colors
-        tasks.forEach((task, index) => {
-            const width = task.duration * THEME.metrics.dayWidth;
-            const height = THEME.metrics.barHeight;
-            const depth = THEME.metrics.barDepth;
+        // Update the instances to represent the data in [start, end]
+        for (let i = 0; i < count; i++) {
+            const dataIndex = start + i;
+            const task = MOCK_DATA[dataIndex];
 
-            const x = (task.startDay * THEME.metrics.dayWidth) + (width / 2);
-            const y = -(index * THEME.metrics.rowHeight);
-            const z = 0;
+            if (task) {
+                const width = task.duration * THEME.metrics.dayWidth;
+                const height = THEME.metrics.barHeight;
+                const depth = THEME.metrics.barDepth;
 
-            tempObject.position.set(x, y, z);
-            tempObject.scale.set(width, height, depth);
-            tempObject.updateMatrix();
+                const x = (task.startDay * THEME.metrics.dayWidth) + (width / 2);
+                const y = -(dataIndex * THEME.metrics.rowHeight);
+                const z = 0;
 
-            meshRef.current!.setMatrixAt(index, tempObject.matrix);
+                tempObject.position.set(x, y, z);
+                tempObject.scale.set(width, height, depth);
+                tempObject.updateMatrix();
 
-            // Color
-            const color =
-                task.status === 'done' ? THEME.colors.success :
-                    task.status === 'in-progress' ? THEME.colors.warning :
-                        task.status === 'delayed' ? THEME.colors.danger :
-                            THEME.colors.primary;
+                meshRef.current.setMatrixAt(i, tempObject.matrix);
 
-            tempColor.set(color);
-            meshRef.current!.setColorAt(index, tempColor);
-        });
+                // Color
+                const color =
+                    task.status === 'done' ? THEME.colors.success :
+                        task.status === 'in-progress' ? THEME.colors.warning :
+                            task.status === 'delayed' ? THEME.colors.danger :
+                                THEME.colors.primary;
 
+                tempColor.set(color);
+                meshRef.current.setColorAt(i, tempColor);
+            } else {
+                // Out of bounds (shouldn't happen with correct logic)
+                tempObject.scale.set(0, 0, 0);
+                tempObject.updateMatrix();
+                meshRef.current.setMatrixAt(i, tempObject.matrix);
+            }
+        }
+
+        meshRef.current.count = count;
         meshRef.current.instanceMatrix.needsUpdate = true;
         if (meshRef.current.instanceColor) meshRef.current.instanceColor.needsUpdate = true;
-    }, [tasks]);
 
-    // Hover Logic
+    }, [start, end, count]); // Re-run when window slides
+
+    // Hover Logic (adapted for virtual index)
     const onMove = (e: any) => {
         e.stopPropagation();
         if (e.instanceId !== undefined) {
-            const task = tasks[e.instanceId];
+            const realIndex = start + e.instanceId;
+            const task = MOCK_DATA[realIndex];
             if (task && task.id !== hoveredId) {
                 setHover(task.id);
                 document.body.style.cursor = 'pointer';
@@ -68,8 +90,8 @@ const GanttChart: React.FC<ThreeElements['group']> = (props) => {
     };
 
     // Find hovered task for Label
-    const hoveredTask = useMemo(() => tasks.find(t => t.id === hoveredId), [hoveredId, tasks]);
-    const hoveredIndex = useMemo(() => tasks.findIndex(t => t.id === hoveredId), [hoveredId, tasks]);
+    const hoveredTask = useMemo(() => MOCK_DATA.find(t => t.id === hoveredId), [hoveredId]);
+    const hoveredIndex = useMemo(() => MOCK_DATA.findIndex(t => t.id === hoveredId), [hoveredId]);
 
     // Calculate hover label position
     const labelPos = useMemo(() => {
@@ -85,9 +107,10 @@ const GanttChart: React.FC<ThreeElements['group']> = (props) => {
         <group {...props}>
             <instancedMesh
                 ref={meshRef}
-                args={[undefined, undefined, count]}
+                args={[undefined, undefined, 1000]} // Max buffer size
                 onPointerMove={onMove}
                 onPointerOut={onOut}
+                frustumCulled={false}
             >
                 <boxGeometry args={[1, 1, 1]} />
                 <meshPhysicalMaterial
@@ -132,7 +155,7 @@ const GanttChart: React.FC<ThreeElements['group']> = (props) => {
             <gridHelper
                 args={[100, 100, THEME.colors.grid, THEME.colors.grid]}
                 rotation={[Math.PI / 2, 0, 0]}
-                position={[25, -count * THEME.metrics.rowHeight / 2, -0.5]}
+                position={[25, -MOCK_DATA.length * THEME.metrics.rowHeight / 2, -0.5]}
             />
         </group>
     );

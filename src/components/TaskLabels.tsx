@@ -2,30 +2,32 @@ import React, { useMemo } from 'react';
 import { Text } from '@react-three/drei';
 import { MOCK_DATA } from '../mockData';
 import { THEME } from '../theme';
+import { useVirtualWindow } from '../hooks/useVirtualWindow';
 
 const TaskLabels: React.FC = () => {
-    // Filter for "Major" tasks to avoid performance bottleneck
-    // Only show text for tasks longer than 15 days
-    const visibleLabels = useMemo(() => {
-        return MOCK_DATA;
-    }, []);
+    const { start, end } = useVirtualWindow(MOCK_DATA.length);
+
+    // Get the slice of data currently in view
+    const visibleData = useMemo(() => {
+        return MOCK_DATA.slice(start, end);
+    }, [start, end]);
 
     return (
         <group>
-            {visibleLabels.map((task) => {
-                const index = MOCK_DATA.findIndex(t => t.id === task.id); // Need original index for Y position
+            {visibleData.map((task, i) => {
+                const globalIndex = start + i;
 
                 const width = task.duration * THEME.metrics.dayWidth;
                 const x = (task.startDay * THEME.metrics.dayWidth);
-                const y = -(index * THEME.metrics.rowHeight);
-                const z = 0.6; // Slightly in front of the bar
+                const y = -(globalIndex * THEME.metrics.rowHeight);
+                const z = 0.6;
 
                 return (
                     <Text
                         key={task.id}
-                        position={[x + 1, y, z]} // Offset X slightly
+                        position={[x + 1, y, z]}
                         fontSize={0.6}
-                        maxWidth={width - 2} // Truncate if too long (simple clamp)
+                        maxWidth={width - 2}
                         color="white"
                         anchorX="left"
                         anchorY="middle"

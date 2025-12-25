@@ -64,7 +64,7 @@ const Scene: React.FC<SceneProps> = ({ viewMode }) => {
             <directionalLight position={[10, 20, 10]} intensity={1} castShadow />
             <pointLight position={[-10, -10, 10]} intensity={0.5} color={THEME.colors.secondary} />
             <Stars radius={100} depth={50} count={5000} factor={4} saturation={0} fade speed={1} />
-            <fog attach="fog" args={[THEME.colors.background, 20, 100]} />
+            <fog attach="fog" args={[THEME.colors.background, 50, 500]} />
 
             <group position={[-5, 5, 0]}>
                 <TimeAxis />
