@@ -5,6 +5,7 @@ import { EffectComposer, Bloom } from '@react-three/postprocessing';
 import * as THREE from 'three';
 import GanttChart from './GanttChart';
 import TimeAxis from './TimeAxis';
+import TaskLabels from './TaskLabels';
 import { THEME } from '../theme';
 import type { ViewMode } from '../App';
 
@@ -42,7 +43,7 @@ const CameraController: React.FC<{ viewMode: ViewMode }> = ({ viewMode }) => {
             ref={controlsRef}
             enableDamping
             dampingFactor={0.1}
-            minDistance={5}
+            minDistance={1}
             maxDistance={200}
             target={[10, -5, 0]}
         />
@@ -68,6 +69,7 @@ const Scene: React.FC<SceneProps> = ({ viewMode }) => {
             <group position={[-5, 5, 0]}>
                 <TimeAxis />
                 <GanttChart />
+                <TaskLabels />
             </group>
 
             <Environment preset="city" />
