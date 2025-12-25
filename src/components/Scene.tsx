@@ -4,6 +4,7 @@ import { OrbitControls, Environment, Stars } from '@react-three/drei';
 import { EffectComposer, Bloom } from '@react-three/postprocessing';
 import * as THREE from 'three';
 import GanttChart from './GanttChart';
+import TimeAxis from './TimeAxis';
 import { THEME } from '../theme';
 import type { ViewMode } from '../App';
 
@@ -54,7 +55,7 @@ const CameraController: React.FC<{ viewMode: ViewMode }> = ({ viewMode }) => {
 const Scene: React.FC<SceneProps> = ({ viewMode }) => {
     return (
         <Canvas
-            camera={{ position: [10, 5, 20], fov: 50 }}
+            camera={{ position: [50, 100, 200], fov: 60 }}
             style={{ background: THEME.colors.background, position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
             dpr={[1, 2]}
             gl={{ toneMapping: THREE.ReinhardToneMapping, toneMappingExposure: 1.5 }}
@@ -71,6 +72,7 @@ const Scene: React.FC<SceneProps> = ({ viewMode }) => {
             <fog attach="fog" args={[THEME.colors.background, 20, 60]} />
 
             <group position={[-5, 5, 0]}>
+                <TimeAxis />
                 <GanttChart />
             </group>
 
