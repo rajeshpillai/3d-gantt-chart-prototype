@@ -7,7 +7,7 @@ const TaskLabels: React.FC = () => {
     // Filter for "Major" tasks to avoid performance bottleneck
     // Only show text for tasks longer than 15 days
     const visibleLabels = useMemo(() => {
-        return MOCK_DATA.filter(task => task.duration > 15);
+        return MOCK_DATA;
     }, []);
 
     return (
