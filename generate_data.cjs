@@ -12,8 +12,14 @@ const MAX_DAYS = Math.ceil((PROJECT_END_DATE - PROJECT_START_DATE) / (1000 * 60 
 let currentDayOffset = 0;
 
 for (let i = 1; i <= 10000; i++) {
-    // Random duration between 1 and 10 days
-    const duration = Math.floor(Math.random() * 10) + 1;
+    // Random duration: mostly short (1-10 days), some long (30-90 days)
+    let duration;
+    if (Math.random() > 0.9) {
+        // 10% chance of a long task (1-3 months)
+        duration = Math.floor(Math.random() * 60) + 30;
+    } else {
+        duration = Math.floor(Math.random() * 10) + 1;
+    }
 
     // Start day logic: mostly sequential but with some parallelism
     // Occasionally jump back or stay same to simulate parallel tracks

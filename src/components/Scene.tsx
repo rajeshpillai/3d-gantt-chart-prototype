@@ -3,13 +3,13 @@ import { Canvas, useThree } from '@react-three/fiber';
 import { OrbitControls, Environment, Stars } from '@react-three/drei';
 import { EffectComposer, Bloom } from '@react-three/postprocessing';
 import * as THREE from 'three';
-import LaptopRig from './LaptopRig';
+import GanttChart from './GanttChart';
+import TimeAxis from './TimeAxis';
 import { THEME } from '../theme';
 import type { ViewMode } from '../App';
 
 interface SceneProps {
     viewMode: ViewMode;
-    isOpen: boolean;
 }
 
 // Camera Controller Component
@@ -49,10 +49,10 @@ const CameraController: React.FC<{ viewMode: ViewMode }> = ({ viewMode }) => {
     );
 };
 
-const Scene: React.FC<SceneProps> = ({ viewMode, isOpen }) => {
+const Scene: React.FC<SceneProps> = ({ viewMode }) => {
     return (
         <Canvas
-            camera={{ position: [20, 30, 40], fov: 50 }}
+            camera={{ position: [50, 100, 200], fov: 60 }}
             style={{ background: THEME.colors.background, position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
             dpr={[1, 2]}
             gl={{ toneMapping: THREE.ReinhardToneMapping, toneMappingExposure: 1.5 }}
@@ -65,8 +65,10 @@ const Scene: React.FC<SceneProps> = ({ viewMode, isOpen }) => {
             <Stars radius={100} depth={50} count={5000} factor={4} saturation={0} fade speed={1} />
             <fog attach="fog" args={[THEME.colors.background, 20, 100]} />
 
-            {/* Laptop Rig */}
-            <LaptopRig isOpen={isOpen} />
+            <group position={[-5, 5, 0]}>
+                <TimeAxis />
+                <GanttChart />
+            </group>
 
             <Environment preset="city" />
 
