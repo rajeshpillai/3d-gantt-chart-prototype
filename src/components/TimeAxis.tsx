@@ -4,55 +4,125 @@ import { THEME } from '../theme';
 
 const TimeAxis: React.FC = () => {
     // Range: Apr 1, 2025 to Mar 30, 2026
-    // We'll generate ticks for each month start
-
     const startDate = new Date('2025-04-01');
-    const labels = useMemo(() => {
-        const items = [];
+
+    const { months, weeks, days } = useMemo(() => {
+        const monthsArr = [];
+        const weeksArr = [];
+        const daysArr = [];
+
         const current = new Date(startDate);
+        // Approx 14 months * 30 days = 420 iterations. safe.
+        // Let's iterate day by day to capture everything accurately.
 
-        // Generate for 14 months to be safe (cover full range + buffer)
-        for (let i = 0; i < 14; i++) {
-            const dateStr = current.toLocaleString('default', { month: 'short', year: 'numeric' });
+        // We'll run for 380 days (approx 1 year + buffer)
+        for (let i = 0; i < 380; i++) {
+            // Copy current date state
+            const date = new Date(current);
+            const dom = date.getDate(); // Day of Month (1-31)
+            const dayOfWeek = date.getDay(); // 0=Sun, 1=Mon...
 
-            // Calculate days from project start
-            const diffTime = current.getTime() - startDate.getTime();
-            const diffDays = diffTime / (1000 * 60 * 60 * 24);
+            // X position
+            const x = i * THEME.metrics.dayWidth;
 
-            items.push({
-                label: dateStr,
-                x: diffDays * THEME.metrics.dayWidth
+            // 1. Days (Every day)
+            // Show only numeric date? "01", "05", etc.
+            // optimization: maybe show every other day if zoomed out?
+            // For now, render all. Font size small.
+            daysArr.push({
+                label: dom.toString(),
+                x: x
             });
 
-            // Move to next month
-            current.setMonth(current.getMonth() + 1);
+            // 2. Weeks (Mondays)
+            if (dayOfWeek === 1) { // Monday
+                // Get Week Number (rough approx or use library)
+                // Minimalist: just "W" + count? or ISO week?
+                // Let's just create a sequential week from project start for simplicity "W1", "W2"...
+                const weekNum = Math.floor(i / 7) + 1;
+                weeksArr.push({
+                    label: `W${weekNum}`,
+                    x: x
+                });
+            }
+
+            // 3. Months (1st of month)
+            if (dom === 1) {
+                const monthStr = date.toLocaleString('default', { month: 'short', year: 'numeric' });
+                monthsArr.push({
+                    label: monthStr,
+                    x: x
+                });
+            }
+
+            // Increment
+            current.setDate(current.getDate() + 1);
         }
-        return items;
+
+        return { months: monthsArr, weeks: weeksArr, days: daysArr };
     }, []);
 
-    const axisY = 10; // Height above the chart
-    const gridBottom = -10000 * THEME.metrics.rowHeight; // Extend down far enough for 10k items
+    const axisY = 12; // Base Height above chart
+    const gridBottom = -100000 * THEME.metrics.rowHeight; // Extend deep
 
     return (
         <group>
-            {labels.map((item, index) => (
-                <group key={index} position={[item.x, 0, 0]}>
-                    {/* Label */}
+            {/* MONTHS (Top) */}
+            {months.map((item, index) => (
+                <group key={`m-${index}`} position={[item.x, 0, 0]}>
                     <Text
                         position={[0, axisY, 0]}
-                        fontSize={2}
+                        fontSize={1.8}
                         color={THEME.colors.text.main}
                         anchorX="left"
                         anchorY="bottom"
                     >
                         {item.label}
                     </Text>
+                    {/* Month Divider (Thick) */}
+                    <mesh position={[0, gridBottom / 2 + axisY / 2, -0.6]}>
+                        <planeGeometry args={[0.3, Math.abs(gridBottom) + axisY]} />
+                        <meshBasicMaterial color={THEME.colors.glassHigh} transparent opacity={0.5} />
+                    </mesh>
+                </group>
+            ))}
 
-                    {/* Vertical Grid Line */}
+            {/* WEEKS (Middle) */}
+            {weeks.map((item, index) => (
+                <group key={`w-${index}`} position={[item.x, 0, 0]}>
+                    <Text
+                        position={[0, axisY - 2, 0]}
+                        fontSize={1}
+                        color="#aaa"
+                        anchorX="left"
+                        anchorY="bottom"
+                    >
+                        {item.label}
+                    </Text>
+                    {/* Week Divider (Thin) */}
+                    <mesh position={[0, gridBottom / 2 + axisY / 2, -0.55]}>
+                        <planeGeometry args={[0.1, Math.abs(gridBottom) + axisY]} />
+                        <meshBasicMaterial color={THEME.colors.glassHigh} transparent opacity={0.2} />
+                    </mesh>
+                </group>
+            ))}
+
+            {/* DAYS (Bottom) */}
+            {days.map((item, index) => (
+                <group key={`d-${index}`} position={[item.x, 0, 0]}>
+                    <Text
+                        position={[0.4, axisY - 3.5, 0]} // Offset slightly to center in column
+                        fontSize={0.4}
+                        color="#666"
+                        anchorX="center"
+                        anchorY="bottom"
+                    >
+                        {item.label}
+                    </Text>
+                    {/* Day Divider (Very Faint) */}
                     <mesh position={[0, gridBottom / 2 + axisY / 2, -0.5]}>
-                        {/* Height is roughly absolute value of gridBottom */}
-                        <planeGeometry args={[0.2, Math.abs(gridBottom) + axisY]} />
-                        <meshBasicMaterial color={THEME.colors.glassHigh} transparent opacity={0.3} />
+                        <planeGeometry args={[0.02, Math.abs(gridBottom) + axisY]} />
+                        <meshBasicMaterial color={THEME.colors.glassHigh} transparent opacity={0.05} />
                     </mesh>
                 </group>
             ))}
