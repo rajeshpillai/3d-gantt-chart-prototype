@@ -1,8 +1,8 @@
 import React, { useMemo } from 'react';
 import { Text, Float, MeshReflectorMaterial } from '@react-three/drei';
 import * as THREE from 'three';
-import { MOCK_DATA } from '../mockData';
-import { THEME } from '../theme';
+import { MOCK_DATA } from '../../mockData';
+import { THEME } from '../../theme';
 
 const LAYER_COUNT = 4;
 const LAYER_SPACING = 8; // Increased for better card visibility

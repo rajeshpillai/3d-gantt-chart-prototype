@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { Text } from '@react-three/drei';
-import { THEME } from '../theme';
+import { THEME } from '../../theme';
 
 const TimeAxis: React.FC = () => {
     // Range: Apr 1, 2025 to Mar 30, 2026

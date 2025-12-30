@@ -2,7 +2,7 @@ import React, { useMemo, useRef, useState, useLayoutEffect } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { Text, RoundedBox, MeshReflectorMaterial, Html } from '@react-three/drei';
 import * as THREE from 'three';
-import { STAGES, DEALS, type Deal, type DealSource } from '../data/pipelineData';
+import { STAGES, DEALS, type Deal, type DealSource } from '../../data/pipelineData';
 
 const tempObject = new THREE.Object3D();
 const tempColor = new THREE.Color();

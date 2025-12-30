@@ -3,16 +3,16 @@ import { Canvas, useThree } from '@react-three/fiber';
 import { OrbitControls, Environment, Stars } from '@react-three/drei';
 import { EffectComposer, Bloom } from '@react-three/postprocessing';
 import * as THREE from 'three';
-import GanttChart from './GanttChart';
-import TimeAxis from './TimeAxis';
-import TaskLabels from './TaskLabels';
-import SalesPipeline from './SalesPipeline';
-import CircularKanban from './CircularKanban';
-import TimeTravelAudit from './TimeTravelAudit';
-import ResourceTopology from './ResourceTopology';
-import DependencyGalaxy from './DependencyGalaxy';
-import { THEME } from '../theme';
-import type { ViewMode } from '../App';
+import GanttChart from '../Gantt/GanttChart';
+import TimeAxis from '../Gantt/TimeAxis';
+import TaskLabels from '../Gantt/TaskLabels';
+import SalesPipeline from '../Pipeline/SalesPipeline';
+import CircularKanban from '../Kanban/CircularKanban';
+import TimeTravelAudit from '../Audit/TimeTravelAudit';
+import ResourceTopology from '../Topology/ResourceTopology';
+import DependencyGalaxy from '../Galaxy/DependencyGalaxy';
+import { THEME } from '../../theme';
+import type { ViewMode } from '../../App';
 
 interface SceneProps {
     viewMode: ViewMode;

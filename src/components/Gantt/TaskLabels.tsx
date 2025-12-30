@@ -1,8 +1,8 @@
 import React, { useMemo } from 'react';
 import { Text } from '@react-three/drei';
-import { MOCK_DATA } from '../mockData';
-import { THEME } from '../theme';
-import { useVirtualWindow } from '../hooks/useVirtualWindow';
+import { MOCK_DATA } from '../../mockData';
+import { THEME } from '../../theme';
+import { useVirtualWindow } from '../../hooks/useVirtualWindow';
 
 const TaskLabels: React.FC = () => {
     const { start, end } = useVirtualWindow(MOCK_DATA.length);

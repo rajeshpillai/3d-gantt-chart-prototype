@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { Text, RoundedBox, Html } from '@react-three/drei';
 import * as THREE from 'three';
-import { THEME } from '../theme';
+import { THEME } from '../../theme';
 
 const TEAM_MEMBERS = ['Rajesh', 'Jai', 'Radhika', 'Kaushal', 'Urvashi', 'Prasanna'];
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];

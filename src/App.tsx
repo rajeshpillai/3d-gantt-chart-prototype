@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import Scene from './components/Scene';
-import Overlay from './components/Overlay';
+import Scene from './components/Layout/Scene';
+import Overlay from './components/Layout/Overlay';
 
 export type ViewMode = 'perspective' | 'pipeline' | 'kanban' | 'audit' | 'topology' | 'galaxy';
 

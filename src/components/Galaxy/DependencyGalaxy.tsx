@@ -2,7 +2,7 @@ import React, { useMemo, useState, useRef } from 'react';
 import { Sphere, Text, Line, Html } from '@react-three/drei';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
-import { MOCK_DATA } from '../mockData';
+import { MOCK_DATA } from '../../mockData';
 
 const NODE_COUNT = 30;
 const RADIUS = 20;

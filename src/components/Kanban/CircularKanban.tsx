@@ -2,8 +2,8 @@ import React, { useMemo, useRef, useState } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { Text, RoundedBox, Html, Float } from '@react-three/drei';
 import * as THREE from 'three';
-import { MOCK_DATA, type GanttTask } from '../mockData';
-import { THEME } from '../theme';
+import { MOCK_DATA, type GanttTask } from '../../mockData';
+import { THEME } from '../../theme';
 
 const RADIUS = 15;
 const COLUMN_WIDTH = 12;

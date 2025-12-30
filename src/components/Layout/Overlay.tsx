@@ -1,5 +1,5 @@
 import React from 'react';
-import type { ViewMode } from '../App';
+import type { ViewMode } from '../../App';
 import { Layers, Box, History, Activity, Share2 } from 'lucide-react';
 
 interface OverlayProps {

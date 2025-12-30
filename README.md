@@ -1,39 +1,58 @@
-# ProPeak CRM Meta Verse Prototype
+# ProPeak CRM Metaverse Prototype
 
-A premium ProPeak CRM Meta Verse visualization built with React, Three.js, and React Three Fiber. This prototype demonstrates a spatial approach to project management timelines using modern web technologies.
+A state-of-the-art 3D Management Suite built with **React**, **Three.js**, and **React Three Fiber**. This prototype reimagines traditional CRM and Project Management interfaces as immersive spatial environments, designed for high-stakes decision-making and complex data analysis.
 
-![ProPeak CRM Meta Verse](https://images.unsplash.com/photo-1531403009284-440f080d1e12?q=80&w=2370&auto=format&fit=crop) 
-*(Note: Replace with actual screenshot)*
+---
 
-## Features
+## 🌌 Core Visualizations
 
--   **3D Spatial Visualization**: Tasks are rendered as 3D bars in a timeline space.
--   **Glassmorphism Aesthetic**: Premium visual style with neon accents and glass-like materials.
--   **Interactive Scene**:
-    -   Orbit controls (Rotate, Pan, Zoom)
-    -   Hover effects on tasks
--   **Dependency Tracking**: Visual lines connecting dependent tasks.
--   **Dark Mode**: Optimized for low-light viewing.
+### 1. 📊 3D Gantt Chart (Spatial Timeline)
+Traditional timelines lack depth. This view renders tasks as 3D glass bars in a spatial grid, allowing project managers to visualize overlapping constraints and buffer zones with physical intuition.
+*   **Application:** Complex project scheduling, multi-track product launches.
+*   **Aesthetic:** Neon glassmorphism with dynamic time-axis indicators.
 
-## Tech Stack
+### 2. 🌊 Sales Pipeline (Flow Dynamics)
+Visualize deals moving through the sales funnel on a dark, reflective floor. Stages are rendered as glowing 3D panels, and deals are instanced meshes that react to hover and stage transitions.
+*   **Application:** High-volume lead management, CRM sales ops.
+*   **Feature:** `MeshReflectorMaterial` for a premium, high-tech "Command Center" feel.
 
--   **Framework**: React 19 + Vite
--   **Language**: TypeScript
--   **3D Engine**: Three.js
--   **React 3D Library**: React Three Fiber (@react-three/fiber)
--   **Helpers**: React Three Drei (@react-three/drei)
--   **Styling**: CSS Modules / Vanilla CSS for global styles
+### 3. 🕸️ Dependency Galaxy (Network Graph)
+An orbital cloud of tasks where dependencies are rendered as "Beams of Light." 
+*   **The "Bloodline" Interaction:** Clicking a node lights up its entire dependency chain (upstream and downstream) while fading unrelated nodes.
+*   **Application:** Critical Path Analysis (CPA), identifying project bottlenecks, risk assessment.
 
-## Getting Started
+### 4. 🧭 Circular Kanban (360° War Room)
+A cylindrical layout that clusters tasks by status around a central pillar. It provides a "War Room" perspective where the user is at the center of the action.
+*   **Application:** Daily stand-ups, active sprint monitoring.
+*   **Innovation:** Opaque status-colored cards with high-contrast text for maximum readability.
 
-### Prerequisites
+### 5. 🌡️ Resource Topology (Workload Heatmap)
+A 3D landscape of pillars representing team members across a 6-month horizon. 
+*   **Heatmap Logic:** Pillars transition from Cyan (Available) to Yellow (Warning) to Red (At-Risk) based on task density.
+*   **Application:** Resource leveling, preventing burnout, capacity planning.
 
--   Node.js (v18 or higher)
--   npm
+### 6. 🕒 Time Travel Audit (Temporal Drift)
+Stacked historical snapshots rendered as semi-transparent glass layers. 
+*   **Drift Lines:** Vertical connections trace task progress across snapshots, highlighting where projects "slipped" from the baseline.
+*   **Application:** Post-mortems, forensic auditing, project history review.
+
+---
+
+## 🛠 Tech Stack
+
+-   **Frontend**: React 19 + Vite (Next-gen build speed)
+-   **3D Core**: Three.js & React Three Fiber (Web GL)
+-   **Scene Helpers**: React Three Drei (Post-processing, Bloom, Camera Controls)
+-   **Icons**: Lucide React
+-   **Performance**: Optimized with `instancedMesh` for rendering thousands of deals/nodes with 60fps stability.
+
+---
+
+## 🚀 Getting Started
 
 ### Installation
 
-1.  Clone the repository:
+1.  Clone and enter the directory:
     ```bash
     git clone https://github.com/rajeshpillai/3d-gantt-chart-prototype.git
     cd 3d-gantt-chart-prototype
@@ -44,34 +63,23 @@ A premium ProPeak CRM Meta Verse visualization built with React, Three.js, and R
     npm install
     ```
 
-3.  Run the development server:
+3.  Launch the immersive environment:
     ```bash
     npm run dev
     ```
 
-4.  Open your browser at `http://localhost:5173`.
+### Controls
+-   **Left Click + Drag**: Rotate (Orbit)
+-   **Right Click + Drag**: Pan (Translate)
+-   **Scroll**: Zoom (Depth)
+-   **Single Click**: Interact with specific 3D objects (e.g., highlighting Dependency Bloodlines)
 
-## Controls
+---
 
--   **Left Click + Drag**: Rotate the scene.
--   **Right Click + Drag**: Pan the camera.
--   **Scroll**: Zoom in/out.
--   **Hover**: View task details (Name, Status).
+## 🎨 Design Philosophy
+The prototype follows a **Premium Dark Tech** aesthetic. By using Bloom effects, reflective floors, and emissive materials, we turn dry project data into a visually arresting experience that keeps users engaged with their data.
 
-## Project Structure
+---
 
-```
-src/
-├── components/
-│   ├── Scene.tsx       # Main 3D Canvas setup
-│   ├── GanttChart.tsx  # Logic for rendering bars and dependencies
-│   ├── GanttBar.tsx    # Individual 3D task bar component
-│   └── Overlay.tsx     # 2D HTML/CSS UI Overlay (HUD)
-├── theme.ts            # Centralized design tokens (colors, dimensions)
-├── mockData.ts         # Sample project data
-└── App.tsx             # Root component
-```
-
-## License
-
+## 📜 License
 MIT

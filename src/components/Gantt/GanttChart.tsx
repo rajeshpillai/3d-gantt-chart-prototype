@@ -2,9 +2,9 @@ import React, { useMemo, useRef, useState, useLayoutEffect } from 'react';
 import { type ThreeElements } from '@react-three/fiber';
 import { Html } from '@react-three/drei';
 import * as THREE from 'three';
-import { MOCK_DATA } from '../mockData';
-import { THEME } from '../theme';
-import { useVirtualWindow } from '../hooks/useVirtualWindow';
+import { MOCK_DATA } from '../../mockData';
+import { THEME } from '../../theme';
+import { useVirtualWindow } from '../../hooks/useVirtualWindow';
 
 const tempObject = new THREE.Object3D();
 const tempColor = new THREE.Color();

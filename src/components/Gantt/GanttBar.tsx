@@ -2,8 +2,8 @@ import React, { useState, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { Text, RoundedBox, Html } from '@react-three/drei';
 import * as THREE from 'three';
-import { THEME } from '../theme';
-import type { GanttTask } from '../mockData';
+import { THEME } from '../../theme';
+import type { GanttTask } from '../../mockData';
 
 interface GanttBarProps {
     task: GanttTask;
