@@ -2,7 +2,7 @@ import { useState } from 'react';
 import Scene from './components/Scene';
 import Overlay from './components/Overlay';
 
-export type ViewMode = 'perspective' | 'pipeline' | 'kanban';
+export type ViewMode = 'perspective' | 'pipeline' | 'kanban' | 'audit' | 'topology';
 
 function App() {
     const [viewMode, setViewMode] = useState<ViewMode>('perspective');

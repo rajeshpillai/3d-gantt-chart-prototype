@@ -1,6 +1,6 @@
 import React from 'react';
 import type { ViewMode } from '../App';
-import { Layers, Box } from 'lucide-react';
+import { Layers, Box, History, Activity } from 'lucide-react';
 
 interface OverlayProps {
     viewMode: ViewMode;
@@ -90,6 +90,44 @@ const Overlay: React.FC<OverlayProps> = ({ viewMode, setViewMode }) => {
                     >
                         <Layers size={16} />
                         Circular Kanban
+                    </button>
+
+                    <button
+                        onClick={() => setViewMode('audit')}
+                        style={{
+                            background: viewMode === 'audit' ? 'rgba(155, 89, 182, 0.2)' : 'rgba(255,255,255,0.1)',
+                            border: `1px solid ${viewMode === 'audit' ? '#9b59b6' : 'rgba(255,255,255,0.2)'}`,
+                            padding: '8px 12px',
+                            borderRadius: '8px',
+                            color: 'white',
+                            cursor: 'pointer',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '8px',
+                            transition: 'all 0.2s'
+                        }}
+                    >
+                        <History size={16} />
+                        Audit Trail
+                    </button>
+
+                    <button
+                        onClick={() => setViewMode('topology')}
+                        style={{
+                            background: viewMode === 'topology' ? 'rgba(231, 76, 60, 0.2)' : 'rgba(255,255,255,0.1)',
+                            border: `1px solid ${viewMode === 'topology' ? '#e74c3c' : 'rgba(255,255,255,0.2)'}`,
+                            padding: '8px 12px',
+                            borderRadius: '8px',
+                            color: 'white',
+                            cursor: 'pointer',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '8px',
+                            transition: 'all 0.2s'
+                        }}
+                    >
+                        <Activity size={16} />
+                        Workload Heatmap
                     </button>
 
                     <div style={{ width: '1px', height: '20px', background: 'rgba(255,255,255,0.2)', margin: '0 12px' }}></div>

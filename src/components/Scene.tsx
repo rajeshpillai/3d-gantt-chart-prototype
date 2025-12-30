@@ -8,6 +8,8 @@ import TimeAxis from './TimeAxis';
 import TaskLabels from './TaskLabels';
 import SalesPipeline from './SalesPipeline';
 import CircularKanban from './CircularKanban';
+import TimeTravelAudit from './TimeTravelAudit';
+import ResourceTopology from './ResourceTopology';
 import { THEME } from '../theme';
 import type { ViewMode } from '../App';
 
@@ -34,6 +36,18 @@ const CameraController: React.FC<{ viewMode: ViewMode }> = ({ viewMode }) => {
                 controlsRef.current.target.set(0, 0, 0);
                 controlsRef.current.enableRotate = true;
                 controlsRef.current.maxPolarAngle = Math.PI / 2;
+            }
+        } else if (viewMode === 'audit') {
+            camera.position.set(30, 20, 40);
+            if (controlsRef.current) {
+                controlsRef.current.target.set(0, 0, 0);
+                controlsRef.current.enableRotate = true;
+            }
+        } else if (viewMode === 'topology') {
+            camera.position.set(40, 30, 40);
+            if (controlsRef.current) {
+                controlsRef.current.target.set(10, 0, 0);
+                controlsRef.current.enableRotate = true;
             }
         } else {
             camera.position.set(10, 5, 20);
@@ -76,6 +90,10 @@ const Scene: React.FC<SceneProps> = ({ viewMode }) => {
                 <SalesPipeline />
             ) : viewMode === 'kanban' ? (
                 <CircularKanban />
+            ) : viewMode === 'audit' ? (
+                <TimeTravelAudit />
+            ) : viewMode === 'topology' ? (
+                <ResourceTopology />
             ) : (
                 <group position={[-5, 5, 0]}>
                     <TimeAxis />
