@@ -3,7 +3,6 @@ import { useFrame } from '@react-three/fiber';
 import { Text, RoundedBox, MeshReflectorMaterial, Html } from '@react-three/drei';
 import * as THREE from 'three';
 import { STAGES, DEALS, type Deal, type DealSource } from '../data/pipelineData';
-import { THEME } from '../theme';
 
 const tempObject = new THREE.Object3D();
 const tempColor = new THREE.Color();
@@ -121,7 +120,7 @@ const SalesPipeline: React.FC = () => {
                     </mesh>
 
                     <Text
-                        position={[0, 6.5, 0]}
+                        position={[0, 8, 0]}
                         fontSize={1.2}
                         fontWeight="bold"
                         color={stage.color}
@@ -135,7 +134,8 @@ const SalesPipeline: React.FC = () => {
                         position={[0, -6.5, 0]}
                         fontSize={0.6}
                         color="white"
-                        opacity={0.6}
+                        material-transparent
+                        material-opacity={0.6}
                         anchorX="center"
                         anchorY="middle"
                     >
