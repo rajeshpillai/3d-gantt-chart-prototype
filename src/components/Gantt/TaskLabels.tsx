@@ -26,7 +26,7 @@ const TaskLabels: React.FC = () => {
                     <Text
                         key={task.id}
                         position={[x + 1, y, z]}
-                        fontSize={0.6}
+                        fontSize={0.4}
                         maxWidth={width - 2}
                         color="white"
                         anchorX="left"
