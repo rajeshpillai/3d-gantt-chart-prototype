@@ -33,14 +33,14 @@ const Overlay: React.FC<OverlayProps> = ({ viewMode, setViewMode }) => {
             }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                     <div style={{ width: '30px', height: '30px', background: 'linear-gradient(45deg, #00d4ff, #ff0055)', borderRadius: '8px' }}></div>
-                    <h1 style={{ margin: 0, color: 'white', fontSize: '1.2rem', fontFamily: 'Inter, sans-serif' }}>3D Gantt Chart</h1>
+                    <h1 style={{ margin: 0, color: 'white', fontSize: '1.2rem', fontFamily: 'Inter, sans-serif' }}>ProPeak CRM Meta Verse</h1>
                 </div>
-                <div style={{ display: 'flex', gap: '20px', color: 'white', alignItems: 'center' }}>
+                <div style={{ display: 'flex', gap: '8px', color: 'white', alignItems: 'center', pointerEvents: 'auto' }}>
                     <button
-                        onClick={() => setViewMode(viewMode === 'perspective' ? 'horizontal' : 'perspective')}
+                        onClick={() => setViewMode('perspective')}
                         style={{
-                            background: 'rgba(255,255,255,0.1)',
-                            border: '1px solid rgba(255,255,255,0.2)',
+                            background: viewMode === 'perspective' ? 'rgba(0, 212, 255, 0.2)' : 'rgba(255,255,255,0.1)',
+                            border: `1px solid ${viewMode === 'perspective' ? '#00d4ff' : 'rgba(255,255,255,0.2)'}`,
                             padding: '8px 12px',
                             borderRadius: '8px',
                             color: 'white',
@@ -51,15 +51,52 @@ const Overlay: React.FC<OverlayProps> = ({ viewMode, setViewMode }) => {
                             transition: 'all 0.2s'
                         }}
                     >
-                        {viewMode === 'perspective' ? <Box size={16} /> : <Layers size={16} />}
-                        {viewMode === 'perspective' ? '3D View' : '2D View'}
+                        <Layers size={16} />
+                        3D Gantt
                     </button>
 
+                    <button
+                        onClick={() => setViewMode('horizontal')}
+                        style={{
+                            background: viewMode === 'horizontal' ? 'rgba(0, 212, 255, 0.2)' : 'rgba(255,255,255,0.1)',
+                            border: `1px solid ${viewMode === 'horizontal' ? '#00d4ff' : 'rgba(255,255,255,0.2)'}`,
+                            padding: '8px 12px',
+                            borderRadius: '8px',
+                            color: 'white',
+                            cursor: 'pointer',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '8px',
+                            transition: 'all 0.2s'
+                        }}
+                    >
+                        <Box size={16} />
+                        2D Gantt
+                    </button>
 
-                    <div style={{ width: '1px', height: '20px', background: 'rgba(255,255,255,0.2)' }}></div>
+                    <button
+                        onClick={() => setViewMode('pipeline')}
+                        style={{
+                            background: viewMode === 'pipeline' ? 'rgba(255, 0, 85, 0.2)' : 'rgba(255,255,255,0.1)',
+                            border: `1px solid ${viewMode === 'pipeline' ? '#ff0055' : 'rgba(255,255,255,0.2)'}`,
+                            padding: '8px 12px',
+                            borderRadius: '8px',
+                            color: 'white',
+                            cursor: 'pointer',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '8px',
+                            transition: 'all 0.2s'
+                        }}
+                    >
+                        <Box size={16} />
+                        Sales Pipeline
+                    </button>
+
+                    <div style={{ width: '1px', height: '20px', background: 'rgba(255,255,255,0.2)', margin: '0 12px' }}></div>
                     <span>Project Alpha</span>
                     <span style={{ opacity: 0.5 }}>|</span>
-                    <span>May 15</span>
+                    <span>{new Date().toLocaleDateString()}</span>
                 </div>
             </header>
 

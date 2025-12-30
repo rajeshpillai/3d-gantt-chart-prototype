@@ -6,6 +6,7 @@ import * as THREE from 'three';
 import GanttChart from './GanttChart';
 import TimeAxis from './TimeAxis';
 import TaskLabels from './TaskLabels';
+import SalesPipeline from './SalesPipeline';
 import { THEME } from '../theme';
 import type { ViewMode } from '../App';
 
@@ -27,6 +28,13 @@ const CameraController: React.FC<{ viewMode: ViewMode }> = ({ viewMode }) => {
                 controlsRef.current.enableRotate = false; // "2D" mode
                 controlsRef.current.maxPolarAngle = Math.PI;
                 controlsRef.current.minPolarAngle = 0;
+            }
+        } else if (viewMode === 'pipeline') {
+            camera.position.set(0, 15, 30);
+            if (controlsRef.current) {
+                controlsRef.current.target.set(0, 0, 0);
+                controlsRef.current.enableRotate = true;
+                controlsRef.current.maxPolarAngle = Math.PI / 2;
             }
         } else {
             camera.position.set(10, 5, 20);
@@ -66,11 +74,15 @@ const Scene: React.FC<SceneProps> = ({ viewMode }) => {
             <Stars radius={100} depth={50} count={5000} factor={4} saturation={0} fade speed={1} />
             <fog attach="fog" args={[THEME.colors.background, 50, 500]} />
 
-            <group position={[-5, 5, 0]}>
-                <TimeAxis />
-                <GanttChart />
-                <TaskLabels />
-            </group>
+            {viewMode === 'pipeline' ? (
+                <SalesPipeline />
+            ) : (
+                <group position={[-5, 5, 0]}>
+                    <TimeAxis />
+                    <GanttChart />
+                    <TaskLabels />
+                </group>
+            )}
 
             <Environment preset="city" />
 

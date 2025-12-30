@@ -1,8 +1,8 @@
-# 3D Gantt Chart Prototype
+# ProPeak CRM Meta Verse Prototype
 
-A premium 3D Gantt Chart visualization built with React, Three.js, and React Three Fiber. This prototype demonstrates a spatial approach to project management timelines using modern web technologies.
+A premium ProPeak CRM Meta Verse visualization built with React, Three.js, and React Three Fiber. This prototype demonstrates a spatial approach to project management timelines using modern web technologies.
 
-![3D Gantt Chart](https://images.unsplash.com/photo-1531403009284-440f080d1e12?q=80&w=2370&auto=format&fit=crop) 
+![ProPeak CRM Meta Verse](https://images.unsplash.com/photo-1531403009284-440f080d1e12?q=80&w=2370&auto=format&fit=crop) 
 *(Note: Replace with actual screenshot)*
 
 ## Features
