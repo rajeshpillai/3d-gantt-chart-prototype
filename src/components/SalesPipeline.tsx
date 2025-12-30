@@ -1,6 +1,6 @@
 import React, { useMemo, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
-import { Text, Float, MeshDistortMaterial, RoundedBox } from '@react-three/drei';
+import { Text, Float, MeshDistortMaterial, RoundedBox, MeshReflectorMaterial } from '@react-three/drei';
 import * as THREE from 'three';
 import { STAGES, DEALS, type Deal } from '../data/pipelineData';
 import { THEME } from '../theme';
@@ -102,7 +102,7 @@ const SalesPipeline: React.FC = () => {
                         anchorX="center"
                         anchorY="middle"
                     >
-                        {`$${DEALS.filter(d => d.stageId === stage.id).reduce((acc, d) => acc + d.value, 0).toLocaleString()}`}
+                        {`Rs. ${DEALS.filter(d => d.stageId === stage.id).reduce((acc, d) => acc + d.value, 0).toLocaleString()}`}
                     </Text>
                 </group>
             ))}
@@ -118,6 +118,24 @@ const SalesPipeline: React.FC = () => {
                     <meshBasicMaterial color="white" transparent opacity={0.2} />
                 </mesh>
             ))}
+
+            {/* Reflective Floor */}
+            <mesh rotation={[-Math.PI / 2, 0, 0]} position={[10, -8, 0]}>
+                <planeGeometry args={[150, 150]} />
+                <MeshReflectorMaterial
+                    blur={[300, 100]}
+                    resolution={1024}
+                    mixBlur={1}
+                    mixStrength={40}
+                    roughness={1}
+                    depthScale={1.2}
+                    minDepthThreshold={0.4}
+                    maxDepthThreshold={1.4}
+                    color="#101010"
+                    metalness={0.5}
+                    mirror={0} // Using mirror=0 but high mixStrength/mixBlur for a subtle glassy look
+                />
+            </mesh>
         </group>
     );
 };
