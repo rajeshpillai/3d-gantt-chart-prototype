@@ -82,7 +82,7 @@ const TimeAxis: React.FC = () => {
                     {/* Month Divider (Thick) */}
                     <mesh position={[0, gridBottom / 2 + axisY / 2, -0.6]}>
                         <planeGeometry args={[0.3, Math.abs(gridBottom) + axisY]} />
-                        <meshBasicMaterial color={THEME.colors.glassHigh} transparent opacity={0.5} />
+                        <meshBasicMaterial color="#ffffff" transparent opacity={0.5} />
                     </mesh>
                 </group>
             ))}
@@ -102,7 +102,7 @@ const TimeAxis: React.FC = () => {
                     {/* Week Divider (Thin) */}
                     <mesh position={[0, gridBottom / 2 + axisY / 2, -0.55]}>
                         <planeGeometry args={[0.1, Math.abs(gridBottom) + axisY]} />
-                        <meshBasicMaterial color={THEME.colors.glassHigh} transparent opacity={0.2} />
+                        <meshBasicMaterial color="#ffffff" transparent opacity={0.2} />
                     </mesh>
                 </group>
             ))}
@@ -122,7 +122,7 @@ const TimeAxis: React.FC = () => {
                     {/* Day Divider (Very Faint) */}
                     <mesh position={[0, gridBottom / 2 + axisY / 2, -0.5]}>
                         <planeGeometry args={[0.02, Math.abs(gridBottom) + axisY]} />
-                        <meshBasicMaterial color={THEME.colors.glassHigh} transparent opacity={0.05} />
+                        <meshBasicMaterial color="#ffffff" transparent opacity={0.05} />
                     </mesh>
                 </group>
             ))}

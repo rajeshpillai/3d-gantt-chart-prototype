@@ -1,6 +1,6 @@
 import React from 'react';
 import type { ViewMode } from '../App';
-import { Layers, Box, History, Activity } from 'lucide-react';
+import { Layers, Box, History, Activity, Share2 } from 'lucide-react';
 
 interface OverlayProps {
     viewMode: ViewMode;
@@ -128,6 +128,25 @@ const Overlay: React.FC<OverlayProps> = ({ viewMode, setViewMode }) => {
                     >
                         <Activity size={16} />
                         Workload Heatmap
+                    </button>
+
+                    <button
+                        onClick={() => setViewMode('galaxy')}
+                        style={{
+                            background: viewMode === 'galaxy' ? 'rgba(0, 212, 255, 0.2)' : 'rgba(255,255,255,0.1)',
+                            border: `1px solid ${viewMode === 'galaxy' ? '#00d4ff' : 'rgba(255,255,255,0.2)'}`,
+                            padding: '8px 12px',
+                            borderRadius: '8px',
+                            color: 'white',
+                            cursor: 'pointer',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '8px',
+                            transition: 'all 0.2s'
+                        }}
+                    >
+                        <Share2 size={16} />
+                        Dependency Galaxy
                     </button>
 
                     <div style={{ width: '1px', height: '20px', background: 'rgba(255,255,255,0.2)', margin: '0 12px' }}></div>

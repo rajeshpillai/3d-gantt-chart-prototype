@@ -10,6 +10,7 @@ import SalesPipeline from './SalesPipeline';
 import CircularKanban from './CircularKanban';
 import TimeTravelAudit from './TimeTravelAudit';
 import ResourceTopology from './ResourceTopology';
+import DependencyGalaxy from './DependencyGalaxy';
 import { THEME } from '../theme';
 import type { ViewMode } from '../App';
 
@@ -47,6 +48,12 @@ const CameraController: React.FC<{ viewMode: ViewMode }> = ({ viewMode }) => {
             camera.position.set(40, 30, 40);
             if (controlsRef.current) {
                 controlsRef.current.target.set(10, 0, 0);
+                controlsRef.current.enableRotate = true;
+            }
+        } else if (viewMode === 'galaxy') {
+            camera.position.set(0, 20, 50);
+            if (controlsRef.current) {
+                controlsRef.current.target.set(0, 0, 0);
                 controlsRef.current.enableRotate = true;
             }
         } else {
@@ -94,6 +101,8 @@ const Scene: React.FC<SceneProps> = ({ viewMode }) => {
                 <TimeTravelAudit />
             ) : viewMode === 'topology' ? (
                 <ResourceTopology />
+            ) : viewMode === 'galaxy' ? (
+                <DependencyGalaxy />
             ) : (
                 <group position={[-5, 5, 0]}>
                     <TimeAxis />
