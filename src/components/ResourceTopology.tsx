@@ -56,8 +56,8 @@ const ResourceTopology: React.FC = () => {
     return (
         <group position={[-PILLAR_GAP * 2.5, 0, -PILLAR_GAP * 2.5]}>
             {/* Grid Floor */}
-            <mesh rotation={[-Math.PI / 2, 0, 0]} position={[PILLAR_GAP * 2.5, -0.1, PILLAR_GAP * 2.5]}>
-                <planeGeometry args={[PILLAR_GAP * 8, PILLAR_GAP * 8]} />
+            <mesh rotation={[-Math.PI / 2, 0, 0]} position={[PILLAR_GAP * 2.5 - 2, -0.1, PILLAR_GAP * 2.5]}>
+                <planeGeometry args={[PILLAR_GAP * 10, PILLAR_GAP * 8]} />
                 <meshStandardMaterial color="#111" transparent opacity={0.5} metalness={0.8} />
             </mesh>
 
