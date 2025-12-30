@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import { Text, Float, MeshReflectorMaterial } from '@react-three/drei';
 import * as THREE from 'three';
 import { MOCK_DATA } from '../../mockData';
-import { THEME } from '../../theme';
+import { useTheme } from '../../ThemeContext';
 
 const LAYER_COUNT = 4;
 const LAYER_SPACING = 8; // Increased for better card visibility
@@ -10,6 +10,7 @@ const LAYER_WIDTH = 40;
 const LAYER_HEIGHT = 25;
 
 const AuditLayer: React.FC<{ index: number; opacity: number; label: string }> = ({ index, opacity, label }) => {
+    const { colors } = useTheme();
     const y = index * LAYER_SPACING;
 
     // Simulate different snapshots by filtering/modifying data based on index
@@ -28,7 +29,7 @@ const AuditLayer: React.FC<{ index: number; opacity: number; label: string }> = 
             <mesh rotation={[-Math.PI / 2, 0, 0]}>
                 <planeGeometry args={[LAYER_WIDTH, LAYER_HEIGHT]} />
                 <meshPhysicalMaterial
-                    color="#222"
+                    color={colors.background}
                     transparent
                     opacity={opacity}
                     transmission={0.5}
@@ -42,7 +43,7 @@ const AuditLayer: React.FC<{ index: number; opacity: number; label: string }> = 
                 position={[-LAYER_WIDTH / 2 + 2, 0.5, LAYER_HEIGHT / 2 - 2]}
                 rotation={[-Math.PI / 2, 0, 0]}
                 fontSize={1}
-                color="white"
+                color={colors.text.main}
                 anchorX="left"
                 opacity={0.8}
             >
@@ -68,7 +69,7 @@ const AuditLayer: React.FC<{ index: number; opacity: number; label: string }> = 
                         <mesh position={[(progressWidth - barWidth) / 2, 0.02, 0]} rotation={[-Math.PI / 2, 0, 0]}>
                             <planeGeometry args={[progressWidth, 0.6]} />
                             <meshBasicMaterial
-                                color={task.status === 'delayed' ? '#ff4444' : '#00ff88'}
+                                color={task.status === 'delayed' ? colors.danger : colors.success}
                                 transparent
                                 opacity={0.8}
                             />
@@ -102,16 +103,16 @@ const AuditLayer: React.FC<{ index: number; opacity: number; label: string }> = 
             <group position={[LAYER_WIDTH / 2 + 5, 2, 0]}>
                 <mesh>
                     <planeGeometry args={[8, 6]} />
-                    <meshBasicMaterial color="#111" transparent opacity={0.8} />
+                    <meshBasicMaterial color={colors.background} transparent opacity={0.8} />
                 </mesh>
-                <Text position={[0, 2, 0.1]} fontSize={0.8} color="white" fontWeight="bold">INSIGHTS</Text>
-                <Text position={[-3, 0.5, 0.1]} fontSize={0.5} color="#00ff88" anchorX="left">
+                <Text position={[0, 2, 0.1]} fontSize={0.8} color={colors.text.main} fontWeight="bold">INSIGHTS</Text>
+                <Text position={[-3, 0.5, 0.1]} fontSize={0.5} color={colors.success} anchorX="left">
                     {`• Efficiency: ${Math.round(85 + index * 3)}%`}
                 </Text>
-                <Text position={[-3, -0.5, 0.1]} fontSize={0.5} color={index > 1 ? "#ffcc00" : "#00ff88"} anchorX="left">
+                <Text position={[-3, -0.5, 0.1]} fontSize={0.5} color={index > 1 ? colors.warning : colors.success} anchorX="left">
                     {`• Status: ${index > 2 ? 'On Track' : 'Baseline'}`}
                 </Text>
-                <Text position={[-3, -1.5, 0.1]} fontSize={0.5} color="#ff4444" anchorX="left">
+                <Text position={[-3, -1.5, 0.1]} fontSize={0.5} color={colors.danger} anchorX="left">
                     {`• Variance: ${index * 2} days`}
                 </Text>
             </group>
@@ -156,7 +157,7 @@ const TimeTravelAudit: React.FC = () => {
                     depthScale={1.2}
                     minDepthThreshold={0.4}
                     maxDepthThreshold={1.4}
-                    color="#050505"
+                    color={colors.background}
                     metalness={0.5}
                     mirror={0}
                 />

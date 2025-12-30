@@ -2,8 +2,8 @@ import React, { useState, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { Text, RoundedBox, Html } from '@react-three/drei';
 import * as THREE from 'three';
-import { THEME } from '../../theme';
 import type { GanttTask } from '../../mockData';
+import { useTheme } from '../../ThemeContext';
 
 interface GanttBarProps {
     task: GanttTask;
@@ -11,25 +11,26 @@ interface GanttBarProps {
 }
 
 const GanttBar: React.FC<GanttBarProps> = ({ task, index }) => {
+    const { colors, metrics } = useTheme();
     const meshRef = useRef<THREE.Mesh>(null);
     const materialRef = useRef<THREE.MeshPhysicalMaterial>(null);
     const [hovered, setHovered] = useState(false);
 
-    const width = task.duration * THEME.metrics.dayWidth;
-    const height = THEME.metrics.barHeight;
-    const depth = THEME.metrics.barDepth;
+    const width = task.duration * metrics.dayWidth;
+    const height = metrics.barHeight;
+    const depth = metrics.barDepth;
 
     // X position
-    const x = (task.startDay * THEME.metrics.dayWidth) + (width / 2);
+    const x = (task.startDay * metrics.dayWidth) + (width / 2);
     // Y position
-    const y = -(index * THEME.metrics.rowHeight);
+    const y = -(index * metrics.rowHeight);
     const z = 0;
 
     const color =
-        task.status === 'done' ? THEME.colors.success :
-            task.status === 'in-progress' ? THEME.colors.warning :
-                task.status === 'delayed' ? THEME.colors.danger :
-                    THEME.colors.primary;
+        task.status === 'done' ? colors.success :
+            task.status === 'in-progress' ? colors.warning :
+                task.status === 'delayed' ? colors.danger :
+                    colors.primary;
 
     useFrame((state, delta) => {
         if (meshRef.current) {
@@ -40,17 +41,12 @@ const GanttBar: React.FC<GanttBarProps> = ({ task, index }) => {
 
         // Pulsing effect for in-progress tasks
         if (materialRef.current && task.status === 'in-progress') {
-            // Sine wave for pulsating emissive intensity
-            // Time * speed + offset
             const time = state.clock.getElapsedTime();
             const pulse = (Math.sin(time * 3) + 1) * 0.5; // 0 to 1
             const minIntensity = 0.2;
-            const maxIntensity = 1.0; // Very bright for neon feel
+            const maxIntensity = 1.0;
 
             materialRef.current.emissiveIntensity = minIntensity + (pulse * (maxIntensity - minIntensity));
-
-            // Also slightly bobble position?
-            // meshRef.current.position.y = y + Math.sin(time * 2) * 0.05; 
         }
     });
 
@@ -68,22 +64,22 @@ const GanttBar: React.FC<GanttBarProps> = ({ task, index }) => {
                     ref={materialRef}
                     color={color}
                     transparent
-                    opacity={0.9} // Higher opacity for better bloom
+                    opacity={0.9}
                     roughness={0.2}
                     metalness={0.1}
                     clearcoat={1}
                     clearcoatRoughness={0.1}
                     emissive={color}
                     emissiveIntensity={hovered ? 0.8 : (task.status === 'in-progress' ? 0.5 : 0.2)}
-                    toneMapped={false} // Crucial for bloom to exceed 1.0
+                    toneMapped={false}
                 />
             </RoundedBox>
 
             {/* Label */}
             <Text
                 position={[-width / 2 + 0.2, height / 2 + 0.3, 0]}
-                fontSize={THEME.metrics.textScale}
-                color={THEME.colors.text.main}
+                fontSize={metrics.textScale}
+                color={colors.text.main}
                 anchorX="left"
                 anchorY="bottom"
             >
@@ -100,7 +96,7 @@ const GanttBar: React.FC<GanttBarProps> = ({ task, index }) => {
                         borderRadius: '5px',
                         whiteSpace: 'nowrap',
                         backdropFilter: 'blur(5px)',
-                        border: `1px solid ${THEME.colors.glassHigh}`
+                        border: `1px solid ${colors.glassHigh}`
                     }}>
                         <div style={{ fontWeight: 'bold' }}>{task.name}</div>
                         <div style={{ fontSize: '0.8em', color: '#ccc' }}>{task.duration} days</div>

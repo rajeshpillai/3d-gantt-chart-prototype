@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { Text, RoundedBox, Html } from '@react-three/drei';
 import * as THREE from 'three';
-import { THEME } from '../../theme';
+import { useTheme } from '../../ThemeContext';
 
 const TEAM_MEMBERS = ['Rajesh', 'Jai', 'Radhika', 'Kaushal', 'Urvashi', 'Prasanna'];
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
@@ -11,12 +11,13 @@ const GRID_SIZE_Z = TEAM_MEMBERS.length;
 const PILLAR_GAP = 5;
 
 const ResourcePillar: React.FC<{ x: number; z: number; count: number; member: string; month: string }> = ({ x, z, count, member, month }) => {
-    // Heatmap color logic: Cyan (low) -> Yellow (mid) -> Red (high)
+    const { colors } = useTheme();
+    // Heatmap color logic: Primary (low) -> Yellow (mid) -> Danger (high)
     const color = useMemo(() => {
-        if (count < 3) return '#00d4ff'; // Cool
-        if (count < 6) return '#ffcc00'; // Warning
-        return '#ff4444'; // Burnout
-    }, [count]);
+        if (count < 3) return colors.primary;
+        if (count < 6) return colors.warning;
+        return colors.danger;
+    }, [count, colors]);
 
     const height = count * 2;
 
@@ -46,6 +47,7 @@ const ResourcePillar: React.FC<{ x: number; z: number; count: number; member: st
 };
 
 const ResourceTopology: React.FC = () => {
+    const { colors } = useTheme();
     // Mock workload data [memberIdx][monthIdx]
     const workloadData = useMemo(() => {
         return TEAM_MEMBERS.map(() =>
@@ -58,7 +60,7 @@ const ResourceTopology: React.FC = () => {
             {/* Grid Floor */}
             <mesh rotation={[-Math.PI / 2, 0, 0]} position={[PILLAR_GAP * 2.5 - 2, -0.1, PILLAR_GAP * 2.5]}>
                 <planeGeometry args={[PILLAR_GAP * 10, PILLAR_GAP * 8]} />
-                <meshStandardMaterial color="#111" transparent opacity={0.5} metalness={0.8} />
+                <meshStandardMaterial color={colors.background} transparent opacity={0.5} metalness={0.8} />
             </mesh>
 
             {/* Labels - X Axis (Months) */}
@@ -67,7 +69,7 @@ const ResourceTopology: React.FC = () => {
                     key={month}
                     position={[i * PILLAR_GAP, 0.5, PILLAR_GAP * GRID_SIZE_Z]}
                     fontSize={1}
-                    color="white"
+                    color={colors.text.main}
                     rotation={[-Math.PI / 2, 0, 0]}
                 >
                     {month}
@@ -80,7 +82,7 @@ const ResourceTopology: React.FC = () => {
                     key={member}
                     position={[-4, 0.5, i * PILLAR_GAP]}
                     fontSize={1}
-                    color="white"
+                    color={colors.text.main}
                     rotation={[-Math.PI / 2, 0, 0]}
                     anchorX="right"
                 >

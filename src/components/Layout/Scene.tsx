@@ -11,8 +11,8 @@ import CircularKanban from '../Kanban/CircularKanban';
 import TimeTravelAudit from '../Audit/TimeTravelAudit';
 import ResourceTopology from '../Topology/ResourceTopology';
 import DependencyGalaxy from '../Galaxy/DependencyGalaxy';
-import { THEME } from '../../theme';
 import type { ViewMode } from '../../App';
+import { useTheme } from '../../ThemeContext';
 
 interface SceneProps {
     viewMode: ViewMode;
@@ -78,10 +78,12 @@ const CameraController: React.FC<{ viewMode: ViewMode }> = ({ viewMode }) => {
 };
 
 const Scene: React.FC<SceneProps> = ({ viewMode }) => {
+    const { colors } = useTheme();
+
     return (
         <Canvas
             camera={{ position: [50, 100, 200], fov: 60 }}
-            style={{ background: THEME.colors.background, position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
+            style={{ background: colors.background, position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
             dpr={[1, 2]}
             gl={{ toneMapping: THREE.ReinhardToneMapping, toneMappingExposure: 1.5 }}
         >
@@ -89,9 +91,9 @@ const Scene: React.FC<SceneProps> = ({ viewMode }) => {
 
             <ambientLight intensity={0.5} />
             <directionalLight position={[10, 20, 10]} intensity={1} castShadow />
-            <pointLight position={[-10, -10, 10]} intensity={0.5} color={THEME.colors.secondary} />
+            <pointLight position={[-10, -10, 10]} intensity={0.5} color={colors.secondary} />
             <Stars radius={100} depth={50} count={5000} factor={4} saturation={0} fade speed={1} />
-            <fog attach="fog" args={[THEME.colors.background, 50, 500]} />
+            <fog attach="fog" args={[colors.background, 50, 500]} />
 
             {viewMode === 'pipeline' ? (
                 <SalesPipeline />

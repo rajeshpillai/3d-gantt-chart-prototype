@@ -1,6 +1,8 @@
 import React from 'react';
 import type { ViewMode } from '../../App';
-import { Layers, Box, History, Activity, Share2 } from 'lucide-react';
+import { Layers, Box, History, Activity, Share2, Palette } from 'lucide-react';
+import { useTheme } from '../../ThemeContext';
+import { THEMES, type ThemePreset } from '../../theme';
 
 interface OverlayProps {
     viewMode: ViewMode;
@@ -8,6 +10,8 @@ interface OverlayProps {
 }
 
 const Overlay: React.FC<OverlayProps> = ({ viewMode, setViewMode }) => {
+    const { preset, setPreset, colors } = useTheme();
+
     return (
         <div style={{
             position: 'absolute',
@@ -18,31 +22,56 @@ const Overlay: React.FC<OverlayProps> = ({ viewMode, setViewMode }) => {
             pointerEvents: 'none',
             display: 'flex',
             flexDirection: 'column',
-            padding: '20px'
+            padding: '20px',
+            color: colors.text.main
         }}>
             <header style={{
                 display: 'flex',
                 justifyContent: 'space-between',
                 alignItems: 'center',
-                background: 'rgba(0,0,0,0.5)',
+                background: colors.background === '#ffffff' ? 'rgba(255,255,255,0.8)' : 'rgba(0,0,0,0.5)',
                 backdropFilter: 'blur(10px)',
                 padding: '10px 20px',
                 borderRadius: '15px',
-                border: '1px solid rgba(255,255,255,0.1)',
+                border: `1px solid ${colors.glassHigh}`,
                 pointerEvents: 'auto'
             }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                    <h1 style={{ margin: 0, color: 'white', fontSize: '1.2rem', fontFamily: 'Inter, sans-serif' }}>PRO[Peak] CRM 3D</h1>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+                    <h1 style={{ margin: 0, color: colors.text.main, fontSize: '1.2rem', fontFamily: 'Inter, sans-serif' }}>PRO[Peak] CRM 3D</h1>
+
+                    {/* Theme Selector */}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', background: 'rgba(255,255,255,0.05)', padding: '4px 10px', borderRadius: '20px', border: `1px solid ${colors.glass}` }}>
+                        <Palette size={14} color={colors.primary} />
+                        <select
+                            value={preset}
+                            onChange={(e) => setPreset(e.target.value as ThemePreset)}
+                            style={{
+                                background: 'transparent',
+                                border: 'none',
+                                color: colors.text.main,
+                                fontSize: '0.8rem',
+                                outline: 'none',
+                                cursor: 'pointer',
+                                textTransform: 'capitalize'
+                            }}
+                        >
+                            {Object.keys(THEMES).map(t => (
+                                <option key={t} value={t} style={{ background: '#222', color: 'white' }}>
+                                    {t}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
                 </div>
-                <div style={{ display: 'flex', gap: '8px', color: 'white', alignItems: 'center', pointerEvents: 'auto' }}>
+                <div style={{ display: 'flex', gap: '8px', color: colors.text.main, alignItems: 'center', pointerEvents: 'auto' }}>
                     <button
                         onClick={() => setViewMode('perspective')}
                         style={{
-                            background: viewMode === 'perspective' ? 'rgba(0, 212, 255, 0.2)' : 'rgba(255,255,255,0.1)',
-                            border: `1px solid ${viewMode === 'perspective' ? '#00d4ff' : 'rgba(255,255,255,0.2)'}`,
+                            background: viewMode === 'perspective' ? `${colors.primary}22` : colors.glass,
+                            border: `1px solid ${viewMode === 'perspective' ? colors.primary : colors.glassHigh}`,
                             padding: '8px 12px',
                             borderRadius: '8px',
-                            color: 'white',
+                            color: colors.text.main,
                             cursor: 'pointer',
                             display: 'flex',
                             alignItems: 'center',
@@ -57,11 +86,11 @@ const Overlay: React.FC<OverlayProps> = ({ viewMode, setViewMode }) => {
                     <button
                         onClick={() => setViewMode('pipeline')}
                         style={{
-                            background: viewMode === 'pipeline' ? 'rgba(255, 0, 85, 0.2)' : 'rgba(255,255,255,0.1)',
-                            border: `1px solid ${viewMode === 'pipeline' ? '#ff0055' : 'rgba(255,255,255,0.2)'}`,
+                            background: viewMode === 'pipeline' ? `${colors.secondary}22` : colors.glass,
+                            border: `1px solid ${viewMode === 'pipeline' ? colors.secondary : colors.glassHigh}`,
                             padding: '8px 12px',
                             borderRadius: '8px',
-                            color: 'white',
+                            color: colors.text.main,
                             cursor: 'pointer',
                             display: 'flex',
                             alignItems: 'center',
@@ -76,11 +105,11 @@ const Overlay: React.FC<OverlayProps> = ({ viewMode, setViewMode }) => {
                     <button
                         onClick={() => setViewMode('kanban')}
                         style={{
-                            background: viewMode === 'kanban' ? 'rgba(0, 255, 136, 0.2)' : 'rgba(255,255,255,0.1)',
-                            border: `1px solid ${viewMode === 'kanban' ? '#00ff88' : 'rgba(255,255,255,0.2)'}`,
+                            background: viewMode === 'kanban' ? `${colors.success}22` : colors.glass,
+                            border: `1px solid ${viewMode === 'kanban' ? colors.success : colors.glassHigh}`,
                             padding: '8px 12px',
                             borderRadius: '8px',
-                            color: 'white',
+                            color: colors.text.main,
                             cursor: 'pointer',
                             display: 'flex',
                             alignItems: 'center',
@@ -95,11 +124,11 @@ const Overlay: React.FC<OverlayProps> = ({ viewMode, setViewMode }) => {
                     <button
                         onClick={() => setViewMode('audit')}
                         style={{
-                            background: viewMode === 'audit' ? 'rgba(155, 89, 182, 0.2)' : 'rgba(255,255,255,0.1)',
-                            border: `1px solid ${viewMode === 'audit' ? '#9b59b6' : 'rgba(255,255,255,0.2)'}`,
+                            background: viewMode === 'audit' ? `${colors.tertiary}22` : colors.glass,
+                            border: `1px solid ${viewMode === 'audit' ? colors.tertiary : colors.glassHigh}`,
                             padding: '8px 12px',
                             borderRadius: '8px',
-                            color: 'white',
+                            color: colors.text.main,
                             cursor: 'pointer',
                             display: 'flex',
                             alignItems: 'center',
@@ -114,11 +143,11 @@ const Overlay: React.FC<OverlayProps> = ({ viewMode, setViewMode }) => {
                     <button
                         onClick={() => setViewMode('topology')}
                         style={{
-                            background: viewMode === 'topology' ? 'rgba(231, 76, 60, 0.2)' : 'rgba(255,255,255,0.1)',
-                            border: `1px solid ${viewMode === 'topology' ? '#e74c3c' : 'rgba(255,255,255,0.2)'}`,
+                            background: viewMode === 'topology' ? `${colors.danger}22` : colors.glass,
+                            border: `1px solid ${viewMode === 'topology' ? colors.danger : colors.glassHigh}`,
                             padding: '8px 12px',
                             borderRadius: '8px',
-                            color: 'white',
+                            color: colors.text.main,
                             cursor: 'pointer',
                             display: 'flex',
                             alignItems: 'center',
@@ -133,11 +162,11 @@ const Overlay: React.FC<OverlayProps> = ({ viewMode, setViewMode }) => {
                     <button
                         onClick={() => setViewMode('galaxy')}
                         style={{
-                            background: viewMode === 'galaxy' ? 'rgba(0, 212, 255, 0.2)' : 'rgba(255,255,255,0.1)',
-                            border: `1px solid ${viewMode === 'galaxy' ? '#00d4ff' : 'rgba(255,255,255,0.2)'}`,
+                            background: viewMode === 'galaxy' ? `${colors.primary}22` : colors.glass,
+                            border: `1px solid ${viewMode === 'galaxy' ? colors.primary : colors.glassHigh}`,
                             padding: '8px 12px',
                             borderRadius: '8px',
-                            color: 'white',
+                            color: colors.text.main,
                             cursor: 'pointer',
                             display: 'flex',
                             alignItems: 'center',
@@ -149,14 +178,14 @@ const Overlay: React.FC<OverlayProps> = ({ viewMode, setViewMode }) => {
                         Dependency Galaxy
                     </button>
 
-                    <div style={{ width: '1px', height: '20px', background: 'rgba(255,255,255,0.2)', margin: '0 12px' }}></div>
+                    <div style={{ width: '1px', height: '20px', background: colors.glassHigh, margin: '0 12px' }}></div>
                     <span>Project Alpha</span>
                     <span style={{ opacity: 0.5 }}>|</span>
                     <span>{new Date().toLocaleDateString()}</span>
                 </div>
             </header>
 
-            <div style={{ marginTop: 'auto', color: 'white', opacity: 0.5, fontSize: '0.8rem' }}>
+            <div style={{ marginTop: 'auto', color: colors.text.main, opacity: 0.5, fontSize: '0.8rem' }}>
                 Left Click + Drag to Rotate • Right Click + Drag to Pan • Scroll to Zoom
             </div>
         </div>

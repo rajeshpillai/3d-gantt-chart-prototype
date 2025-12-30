@@ -3,13 +3,14 @@ import { useFrame } from '@react-three/fiber';
 import { Text, RoundedBox, Html, Float } from '@react-three/drei';
 import * as THREE from 'three';
 import { MOCK_DATA, type GanttTask } from '../../mockData';
-import { THEME } from '../../theme';
+import { useTheme } from '../../ThemeContext';
 
 const RADIUS = 15;
 const CARD_WIDTH = 4;
 const CARD_HEIGHT = 2.5;
 
 const KanbanCard: React.FC<{ task: GanttTask; angle: number; y: number }> = ({ task, angle, y }) => {
+    const { colors } = useTheme();
     const [hovered, setHover] = useState(false);
 
     // Add tiny random jitter to prevent Z-fighting
@@ -24,10 +25,10 @@ const KanbanCard: React.FC<{ task: GanttTask; angle: number; y: number }> = ({ t
     }, [angle, y, hovered, jitter]);
 
     const color =
-        task.status === 'done' ? THEME.colors.success :
-            task.status === 'in-progress' ? THEME.colors.warning :
-                task.status === 'delayed' ? THEME.colors.danger :
-                    THEME.colors.primary;
+        task.status === 'done' ? colors.success :
+            task.status === 'in-progress' ? colors.warning :
+                task.status === 'delayed' ? colors.danger :
+                    colors.primary;
 
     return (
         <group position={pos} rotation={[0, angle, 0]}>
@@ -92,6 +93,7 @@ const KanbanCard: React.FC<{ task: GanttTask; angle: number; y: number }> = ({ t
 };
 
 const CircularKanban: React.FC = () => {
+    const { colors } = useTheme();
     const groupRef = useRef<THREE.Group>(null);
 
     // Group tasks by status
@@ -140,10 +142,10 @@ const CircularKanban: React.FC = () => {
                             fontSize={1.5}
                             fontWeight="normal"
                             color={
-                                status === 'done' ? '#00cc6a' :
-                                    status === 'in-progress' ? '#d4ac0d' :
-                                        status === 'delayed' ? '#c0392b' :
-                                            '#2980b9'
+                                status === 'done' ? colors.success :
+                                    status === 'in-progress' ? colors.warning :
+                                        status === 'delayed' ? colors.danger :
+                                            colors.primary
                             }
                         >
                             {status.toUpperCase()}
@@ -170,15 +172,14 @@ const CircularKanban: React.FC = () => {
                 );
             })}
 
-            {/* Central Pillar or Floor? */}
             <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -8, 0]}>
                 <circleGeometry args={[30, 64]} />
-                <meshStandardMaterial color="#050505" roughness={0.5} />
+                <meshStandardMaterial color={colors.background} roughness={0.5} />
             </mesh>
 
             <mesh position={[0, -4, 0]}>
                 <cylinderGeometry args={[2, 2, 12, 32]} />
-                <meshStandardMaterial color="#111" metalness={0.8} roughness={0.2} transparent opacity={0.5} />
+                <meshStandardMaterial color={colors.secondary} metalness={0.8} roughness={0.2} transparent opacity={0.2} />
             </mesh>
         </group>
     );

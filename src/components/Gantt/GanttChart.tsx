@@ -3,8 +3,8 @@ import { type ThreeElements } from '@react-three/fiber';
 import { Html } from '@react-three/drei';
 import * as THREE from 'three';
 import { MOCK_DATA } from '../../mockData';
-import { THEME } from '../../theme';
 import { useVirtualWindow } from '../../hooks/useVirtualWindow';
+import { useTheme } from '../../ThemeContext';
 
 const tempObject = new THREE.Object3D();
 const tempColor = new THREE.Color();
@@ -12,6 +12,7 @@ const tempColor = new THREE.Color();
 const GanttChart: React.FC<ThreeElements['group']> = (props) => {
     const meshRef = useRef<THREE.InstancedMesh>(null);
     const [hoveredId, setHover] = useState<string | null>(null);
+    const { colors, metrics } = useTheme();
 
     // Virtualization Hook
     const { start, end } = useVirtualWindow(MOCK_DATA.length);
@@ -34,12 +35,12 @@ const GanttChart: React.FC<ThreeElements['group']> = (props) => {
             const task = MOCK_DATA[dataIndex];
 
             if (task) {
-                const width = task.duration * THEME.metrics.dayWidth;
-                const height = THEME.metrics.barHeight;
-                const depth = THEME.metrics.barDepth;
+                const width = task.duration * metrics.dayWidth;
+                const height = metrics.barHeight;
+                const depth = metrics.barDepth;
 
-                const x = (task.startDay * THEME.metrics.dayWidth) + (width / 2);
-                const y = -(dataIndex * THEME.metrics.rowHeight);
+                const x = (task.startDay * metrics.dayWidth) + (width / 2);
+                const y = -(dataIndex * metrics.rowHeight);
                 const z = 0;
 
                 tempObject.position.set(x, y, z);
@@ -50,10 +51,10 @@ const GanttChart: React.FC<ThreeElements['group']> = (props) => {
 
                 // Color
                 const color =
-                    task.status === 'done' ? THEME.colors.success :
-                        task.status === 'in-progress' ? THEME.colors.warning :
-                            task.status === 'delayed' ? THEME.colors.danger :
-                                THEME.colors.primary;
+                    task.status === 'done' ? colors.success :
+                        task.status === 'in-progress' ? colors.warning :
+                            task.status === 'delayed' ? colors.danger :
+                                colors.primary;
 
                 tempColor.set(color);
                 meshRef.current.setColorAt(i, tempColor);
@@ -69,7 +70,7 @@ const GanttChart: React.FC<ThreeElements['group']> = (props) => {
         meshRef.current.instanceMatrix.needsUpdate = true;
         if (meshRef.current.instanceColor) meshRef.current.instanceColor.needsUpdate = true;
 
-    }, [start, end, count]); // Re-run when window slides
+    }, [start, end, count, colors, metrics]); // Re-run when window slides or theme changes
 
     // Hover Logic (adapted for virtual index)
     const onMove = (e: any) => {
@@ -96,11 +97,11 @@ const GanttChart: React.FC<ThreeElements['group']> = (props) => {
     // Calculate hover label position
     const labelPos = useMemo(() => {
         if (!hoveredTask || hoveredIndex === -1) return [0, 0, 0];
-        const width = hoveredTask.duration * THEME.metrics.dayWidth;
-        const x = (hoveredTask.startDay * THEME.metrics.dayWidth) + (width / 2);
-        const y = -(hoveredIndex * THEME.metrics.rowHeight);
+        const width = hoveredTask.duration * metrics.dayWidth;
+        const x = (hoveredTask.startDay * metrics.dayWidth) + (width / 2);
+        const y = -(hoveredIndex * metrics.rowHeight);
         return [x, y, 0];
-    }, [hoveredTask, hoveredIndex]);
+    }, [hoveredTask, hoveredIndex, metrics]);
 
 
     return (
@@ -127,7 +128,7 @@ const GanttChart: React.FC<ThreeElements['group']> = (props) => {
             {hoveredTask && (
                 <group position={labelPos as [number, number, number]}>
                     <mesh>
-                        <boxGeometry args={[hoveredTask.duration * THEME.metrics.dayWidth + 0.2, THEME.metrics.barHeight + 0.2, THEME.metrics.barDepth + 0.2]} />
+                        <boxGeometry args={[hoveredTask.duration * metrics.dayWidth + 0.2, metrics.barHeight + 0.2, metrics.barDepth + 0.2]} />
                         <meshBasicMaterial color="white" wireframe />
                     </mesh>
 
@@ -139,7 +140,7 @@ const GanttChart: React.FC<ThreeElements['group']> = (props) => {
                             borderRadius: '5px',
                             whiteSpace: 'nowrap',
                             backdropFilter: 'blur(5px)',
-                            border: `1px solid ${THEME.colors.glassHigh}`
+                            border: `1px solid ${colors.glassHigh}`
                         }}>
                             <div style={{ fontWeight: 'bold' }}>{hoveredTask.name}</div>
                             <div style={{ fontSize: '0.8em', color: '#ccc' }}>{hoveredTask.duration} days</div>
@@ -153,9 +154,9 @@ const GanttChart: React.FC<ThreeElements['group']> = (props) => {
             )}
 
             <gridHelper
-                args={[100, 100, THEME.colors.grid, THEME.colors.grid]}
+                args={[100, 100, colors.grid, colors.grid]}
                 rotation={[Math.PI / 2, 0, 0]}
-                position={[25, -MOCK_DATA.length * THEME.metrics.rowHeight / 2, -0.5]}
+                position={[25, -MOCK_DATA.length * metrics.rowHeight / 2, -0.5]}
             />
         </group>
     );

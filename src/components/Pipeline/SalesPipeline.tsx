@@ -3,19 +3,21 @@ import { useFrame } from '@react-three/fiber';
 import { Text, RoundedBox, MeshReflectorMaterial, Html } from '@react-three/drei';
 import * as THREE from 'three';
 import { STAGES, DEALS, type DealSource } from '../../data/pipelineData';
+import { useTheme } from '../../ThemeContext';
 
 const tempObject = new THREE.Object3D();
 const tempColor = new THREE.Color();
 
-const SOURCE_COLORS: Record<DealSource, string> = {
-    'india-mart': '#ffaa00', // Amber
-    'web': '#00d4ff',        // Cyan
-    'internal': '#ff00ff'    // Magenta
-};
-
 const SalesPipeline: React.FC = () => {
+    const { colors } = useTheme();
     const meshRef = useRef<THREE.InstancedMesh>(null);
     const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+
+    const SOURCE_COLORS: Record<DealSource, string> = {
+        'india-mart': colors.tertiary,
+        'web': colors.primary,
+        'internal': colors.secondary
+    };
 
     // Memoize random offsets and phases for animation
     const dealMetadata = useMemo(() => {
@@ -123,7 +125,7 @@ const SalesPipeline: React.FC = () => {
                         position={[0, 8, 0]}
                         fontSize={1.2}
                         fontWeight="bold"
-                        color={stage.color}
+                        color={colors.text.main}
                         anchorX="center"
                         anchorY="middle"
                     >
@@ -199,7 +201,7 @@ const SalesPipeline: React.FC = () => {
                     depthScale={1.2}
                     minDepthThreshold={0.4}
                     maxDepthThreshold={1.4}
-                    color="#101010"
+                    color={colors.background}
                     metalness={0.5}
                     mirror={0}
                 />

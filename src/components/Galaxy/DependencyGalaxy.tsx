@@ -3,6 +3,7 @@ import { Sphere, Text, Line, Html } from '@react-three/drei';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 import { MOCK_DATA } from '../../mockData';
+import { useTheme } from '../../ThemeContext';
 
 const NODE_COUNT = 30;
 const RADIUS = 20;
@@ -17,6 +18,7 @@ interface DependencyNode {
 }
 
 const DependencyGalaxy: React.FC = () => {
+    const { colors } = useTheme();
     const [selectedId, setSelectedId] = useState<string | null>(null);
 
     // Generate nodes and random dependencies
@@ -116,8 +118,8 @@ const DependencyGalaxy: React.FC = () => {
                 const scale = isSelected ? 1.8 :
                     (node.isCritical ? 1.4 : (isInBloodline ? 1.2 : 1.0));
 
-                const color = node.status === 'delayed' ? '#ff4444' :
-                    node.status === 'done' ? '#00ff88' : '#00d4ff';
+                const color = node.status === 'delayed' ? colors.danger :
+                    node.status === 'done' ? colors.success : colors.primary;
 
                 return (
                     <group key={node.id} position={node.position}>
@@ -162,7 +164,7 @@ const DependencyGalaxy: React.FC = () => {
 
                     const isInBloodline = bloodlineIds.has(node.id) && bloodlineIds.has(target.id);
                     const opacity = !selectedId ? 0.2 : (isInBloodline ? 0.6 : 0.02);
-                    const color = isInBloodline ? '#00ff88' : '#444';
+                    const color = isInBloodline ? colors.success : colors.grid;
 
                     return (
                         <Line
@@ -180,14 +182,14 @@ const DependencyGalaxy: React.FC = () => {
             {/* Interaction hint */}
             <Html position={[0, -25, 0]} center>
                 <div style={{
-                    color: 'white',
-                    background: 'rgba(0,0,0,0.6)',
+                    color: colors.text.main,
+                    background: colors.background,
                     padding: '8px 16px',
                     borderRadius: '20px',
                     fontSize: '0.9rem',
                     whiteSpace: 'nowrap',
                     pointerEvents: 'none',
-                    border: '1px solid rgba(255,255,255,0.2)'
+                    border: `1px solid ${colors.glassHigh}`
                 }}>
                     {selectedId ? "Viewing Task Bloodline • Click again to reset" : "Critical Tasks glow intensely • Select one to see its Bloodline"}
                 </div>
