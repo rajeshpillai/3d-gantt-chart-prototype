@@ -93,6 +93,25 @@ const Overlay: React.FC<OverlayProps> = ({ viewMode, setViewMode }) => {
                         Sales Pipeline
                     </button>
 
+                    <button
+                        onClick={() => setViewMode('kanban')}
+                        style={{
+                            background: viewMode === 'kanban' ? 'rgba(0, 255, 136, 0.2)' : 'rgba(255,255,255,0.1)',
+                            border: `1px solid ${viewMode === 'kanban' ? '#00ff88' : 'rgba(255,255,255,0.2)'}`,
+                            padding: '8px 12px',
+                            borderRadius: '8px',
+                            color: 'white',
+                            cursor: 'pointer',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '8px',
+                            transition: 'all 0.2s'
+                        }}
+                    >
+                        <Layers size={16} />
+                        Circular Kanban
+                    </button>
+
                     <div style={{ width: '1px', height: '20px', background: 'rgba(255,255,255,0.2)', margin: '0 12px' }}></div>
                     <span>Project Alpha</span>
                     <span style={{ opacity: 0.5 }}>|</span>

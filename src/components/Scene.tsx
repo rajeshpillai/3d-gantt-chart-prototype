@@ -7,6 +7,7 @@ import GanttChart from './GanttChart';
 import TimeAxis from './TimeAxis';
 import TaskLabels from './TaskLabels';
 import SalesPipeline from './SalesPipeline';
+import CircularKanban from './CircularKanban';
 import { THEME } from '../theme';
 import type { ViewMode } from '../App';
 
@@ -36,6 +37,13 @@ const CameraController: React.FC<{ viewMode: ViewMode }> = ({ viewMode }) => {
                 controlsRef.current.enableRotate = true;
                 controlsRef.current.maxPolarAngle = Math.PI / 2;
             }
+        } else if (viewMode === 'kanban') {
+            camera.position.set(0, 5, 25);
+            if (controlsRef.current) {
+                controlsRef.current.target.set(0, 0, 0);
+                controlsRef.current.enableRotate = true;
+                controlsRef.current.maxPolarAngle = Math.PI / 2;
+            }
         } else {
             camera.position.set(10, 5, 20);
             if (controlsRef.current) {
@@ -53,7 +61,6 @@ const CameraController: React.FC<{ viewMode: ViewMode }> = ({ viewMode }) => {
             dampingFactor={0.1}
             minDistance={1}
             maxDistance={200}
-            target={[10, -5, 0]}
         />
     );
 };
@@ -76,6 +83,8 @@ const Scene: React.FC<SceneProps> = ({ viewMode }) => {
 
             {viewMode === 'pipeline' ? (
                 <SalesPipeline />
+            ) : viewMode === 'kanban' ? (
+                <CircularKanban />
             ) : (
                 <group position={[-5, 5, 0]}>
                     <TimeAxis />
