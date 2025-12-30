@@ -24,7 +24,7 @@ const Header: Component = () => {
             background: theme.colors().glassHigh,
             'backdrop-filter': 'blur(10px)',
             'border-bottom': `1px solid ${theme.colors().glassHigh}`,
-            'z-index': 50,
+            'z-index': 1000,
             display: 'flex',
             'align-items': 'center',
             'justify-content': 'space-between',
