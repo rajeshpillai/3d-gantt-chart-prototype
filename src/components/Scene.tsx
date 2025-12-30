@@ -21,16 +21,7 @@ const CameraController: React.FC<{ viewMode: ViewMode }> = ({ viewMode }) => {
     const controlsRef = useRef<any>(null);
 
     useEffect(() => {
-        if (viewMode === 'horizontal') {
-            camera.position.set(20, 0, 0); // Side view
-            camera.lookAt(20, 0, 0);
-            if (controlsRef.current) {
-                controlsRef.current.target.set(20, -5, 0);
-                controlsRef.current.enableRotate = false; // "2D" mode
-                controlsRef.current.maxPolarAngle = Math.PI;
-                controlsRef.current.minPolarAngle = 0;
-            }
-        } else if (viewMode === 'pipeline') {
+        if (viewMode === 'pipeline') {
             camera.position.set(0, 15, 30);
             if (controlsRef.current) {
                 controlsRef.current.target.set(0, 0, 0);
@@ -100,7 +91,7 @@ const Scene: React.FC<SceneProps> = ({ viewMode }) => {
                 <Bloom
                     luminanceThreshold={0.5}
                     mipmapBlur
-                    intensity={1.5}
+                    intensity={0.5}
                     radius={0.4}
                 />
             </EffectComposer>

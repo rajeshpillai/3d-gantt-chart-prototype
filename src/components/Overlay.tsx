@@ -32,8 +32,7 @@ const Overlay: React.FC<OverlayProps> = ({ viewMode, setViewMode }) => {
                 pointerEvents: 'auto'
             }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                    <div style={{ width: '30px', height: '30px', background: 'linear-gradient(45deg, #00d4ff, #ff0055)', borderRadius: '8px' }}></div>
-                    <h1 style={{ margin: 0, color: 'white', fontSize: '1.2rem', fontFamily: 'Inter, sans-serif' }}>ProPeak CRM Meta Verse</h1>
+                    <h1 style={{ margin: 0, color: 'white', fontSize: '1.2rem', fontFamily: 'Inter, sans-serif' }}>PRO[Peak] CRM 3D</h1>
                 </div>
                 <div style={{ display: 'flex', gap: '8px', color: 'white', alignItems: 'center', pointerEvents: 'auto' }}>
                     <button
@@ -53,25 +52,6 @@ const Overlay: React.FC<OverlayProps> = ({ viewMode, setViewMode }) => {
                     >
                         <Layers size={16} />
                         3D Gantt
-                    </button>
-
-                    <button
-                        onClick={() => setViewMode('horizontal')}
-                        style={{
-                            background: viewMode === 'horizontal' ? 'rgba(0, 212, 255, 0.2)' : 'rgba(255,255,255,0.1)',
-                            border: `1px solid ${viewMode === 'horizontal' ? '#00d4ff' : 'rgba(255,255,255,0.2)'}`,
-                            padding: '8px 12px',
-                            borderRadius: '8px',
-                            color: 'white',
-                            cursor: 'pointer',
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '8px',
-                            transition: 'all 0.2s'
-                        }}
-                    >
-                        <Box size={16} />
-                        2D Gantt
                     </button>
 
                     <button
