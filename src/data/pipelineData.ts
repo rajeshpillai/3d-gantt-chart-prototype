@@ -1,3 +1,5 @@
+export type DealSource = 'india-mart' | 'web' | 'internal';
+
 export interface Stage {
     id: string;
     name: string;
@@ -13,6 +15,7 @@ export interface Deal {
     stageId: string;
     probability: number;
     owner: string;
+    source: DealSource;
 }
 
 export const STAGES: Stage[] = [
@@ -23,12 +26,35 @@ export const STAGES: Stage[] = [
     { id: 'closed', name: 'Closed', position: [40, 0, 0], color: '#ffffff' },
 ];
 
-export const DEALS: Deal[] = [
-    { id: '1', name: 'Cloud Migration', company: 'TechCorp', value: 50000, stageId: 'lead', probability: 0.1, owner: 'Alice' },
-    { id: '2', name: 'Security Audit', company: 'SecureNet', value: 25000, stageId: 'qualified', probability: 0.3, owner: 'Bob' },
-    { id: '3', name: 'AI Integration', company: 'InnovateAI', value: 100000, stageId: 'proposal', probability: 0.6, owner: 'Alice' },
-    { id: '4', name: 'ERP Implementation', company: 'GlobalBiz', value: 150000, stageId: 'negotiation', probability: 0.8, owner: 'Charlie' },
-    { id: '5', name: 'Data Analytics', company: 'DataGen', value: 45000, stageId: 'closed', probability: 1.0, owner: 'Bob' },
-    { id: '6', name: 'Mobile App', company: 'AppWorks', value: 30000, stageId: 'qualified', probability: 0.2, owner: 'Alice' },
-    { id: '7', name: 'Infrastructure', company: 'BaseLayer', value: 75000, stageId: 'proposal', probability: 0.5, owner: 'Charlie' },
-];
+const SOURCES: DealSource[] = ['india-mart', 'web', 'internal'];
+const STAGE_IDS = STAGES.map(s => s.id);
+const COMPANIES = ['TechCorp', 'SecureNet', 'InnovateAI', 'GlobalBiz', 'DataGen', 'AppWorks', 'BaseLayer', 'CloudSoft', 'NexusSystems', 'QuantumSolutions'];
+const OWNERS = ['Alice', 'Bob', 'Charlie', 'Dana'];
+
+// Generate 250 deals
+const generateDeals = (count: number): Deal[] => {
+    const deals: Deal[] = [];
+    for (let i = 1; i <= count; i++) {
+        // Biased distribution: more leads, fewer closed deals
+        const stageChance = Math.random();
+        let stageId = 'lead';
+        if (stageChance > 0.4) stageId = 'qualified';
+        if (stageChance > 0.7) stageId = 'proposal';
+        if (stageChance > 0.85) stageId = 'negotiation';
+        if (stageChance > 0.95) stageId = 'closed';
+
+        deals.push({
+            id: i.toString(),
+            name: `Project ${String.fromCharCode(65 + (i % 26))}${i}`,
+            company: COMPANIES[i % COMPANIES.length],
+            value: Math.floor(Math.random() * 100000) + 10000,
+            stageId: stageId,
+            probability: stageId === 'closed' ? 1.0 : stageId === 'negotiation' ? 0.8 : stageId === 'proposal' ? 0.6 : stageId === 'qualified' ? 0.3 : 0.1,
+            owner: OWNERS[i % OWNERS.length],
+            source: SOURCES[i % SOURCES.length]
+        });
+    }
+    return deals;
+};
+
+export const DEALS: Deal[] = generateDeals(250);
