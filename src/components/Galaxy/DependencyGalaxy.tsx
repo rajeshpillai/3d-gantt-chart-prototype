@@ -63,21 +63,31 @@ const DependencyGalaxy: React.FC = () => {
         const reachable = new Set<string>();
         reachable.add(selectedId);
 
-        // Simple BFS/DFS to find all connected nodes (undirected for "bloodline" feel)
-        let changed = true;
-        while (changed) {
-            changed = false;
-            graph.forEach(node => {
-                const hasConnection = node.dependencies.some(depId => reachable.has(depId)) ||
-                    (reachable.has(node.id) && node.dependencies.length > 0) ||
-                    graph.some(other => other.dependencies.includes(node.id) && reachable.has(other.id));
-
-                if (hasConnection && !reachable.has(node.id)) {
-                    reachable.add(node.id);
-                    changed = true;
+        // 1. Upstream: Find all nodes that the selected node depends on
+        const findUpstream = (id: string) => {
+            const node = graph.find(n => n.id === id);
+            if (!node) return;
+            node.dependencies.forEach(depId => {
+                if (!reachable.has(depId)) {
+                    reachable.add(depId);
+                    findUpstream(depId);
                 }
             });
-        }
+        };
+
+        // 2. Downstream: Find all nodes that depend on the selected node
+        const findDownstream = (id: string) => {
+            graph.forEach(node => {
+                if (node.dependencies.includes(id) && !reachable.has(node.id)) {
+                    reachable.add(node.id);
+                    findDownstream(node.id);
+                }
+            });
+        };
+
+        findUpstream(selectedId);
+        findDownstream(selectedId);
+
         return reachable;
     }, [selectedId, graph]);
 
