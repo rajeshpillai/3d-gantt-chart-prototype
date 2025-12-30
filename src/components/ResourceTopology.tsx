@@ -3,7 +3,7 @@ import { Text, RoundedBox, Html } from '@react-three/drei';
 import * as THREE from 'three';
 import { THEME } from '../theme';
 
-const TEAM_MEMBERS = ['Rajesh', 'Amit', 'Sriya', 'Vikram', 'Ananya', 'Kevin'];
+const TEAM_MEMBERS = ['Rajesh', 'Jai', 'Radhika', 'Kaushal', 'Urvashi', 'Prasanna'];
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
 
 const GRID_SIZE_X = MONTHS.length;
