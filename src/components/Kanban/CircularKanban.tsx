@@ -6,11 +6,10 @@ import { MOCK_DATA, type GanttTask } from '../../mockData';
 import { THEME } from '../../theme';
 
 const RADIUS = 15;
-const COLUMN_WIDTH = 12;
 const CARD_WIDTH = 4;
 const CARD_HEIGHT = 2.5;
 
-const KanbanCard: React.FC<{ task: GanttTask; angle: number; y: number; index: number }> = ({ task, angle, y, index }) => {
+const KanbanCard: React.FC<{ task: GanttTask; angle: number; y: number }> = ({ task, angle, y }) => {
     const [hovered, setHover] = useState(false);
 
     // Add tiny random jitter to prevent Z-fighting
@@ -112,7 +111,7 @@ const CircularKanban: React.FC = () => {
 
     const statuses = ['todo', 'in-progress', 'done', 'delayed'];
 
-    useFrame((state) => {
+    useFrame(() => {
         if (groupRef.current) {
             // Auto rotation is disabled, use OrbitControls to move
             // groupRef.current.rotation.y += 0.001; 
@@ -164,7 +163,6 @@ const CircularKanban: React.FC = () => {
                                     task={task}
                                     angle={localAngle}
                                     y={y}
-                                    index={tIndex}
                                 />
                             );
                         })}
